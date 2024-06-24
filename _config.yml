@@ -1,0 +1,46 @@
+# Site settings
+title: kejishucloud博客
+description: 一个关于技术和编程的个人博客
+baseurl: "" # 站点的子路径，通常为""
+url: "https://kejishucloud.github.io" # 网站的网址
+
+# Social settings
+twitter_username: kejishucloud
+github_username: kejishucloud
+
+# Build settings
+markdown: kramdown
+theme: minima
+
+# Permalinks
+permalink: /:categories/:year/:month/:day/:title:output_ext
+
+# Defaults
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "Kejishu Cloud"
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Exclude from processing
+exclude:
+  - "node_modules"
+  - "vendor/bundle"
+  - "Gemfile.lock"
+  - "package.json"
+  - "yarn.lock"
+
+# Google Analytics
+google_analytics: G-JPTTDNCLWD
+
+# Others
+paginate: 5 # 每页显示的文章数
+paginate_path: "/page:num"
