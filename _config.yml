@@ -8,6 +8,12 @@ url: "https://kejishucloud.github.io" # 网站的网址
 twitter_username: kejishucloud
 github_username: kejishucloud
 
+# Languages
+languages:
+  - en
+  - zh
+default_lang: zh
+
 # Build settings
 markdown: kramdown
 theme: minima

@@ -1,0 +1,133 @@
+/* Reset some basic elements for consistency */
+body, h1, h2, h3, h4, h5, h6, p, ol, ul, figure, blockquote, dl, dd {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+}
+
+/* Global settings */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    color: #222;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-top: 1rem;
+}
+
+h2 {
+    font-size: 2em;
+    margin-top: 1.5rem;
+}
+
+h3 {
+    font-size: 1.75em;
+    margin-top: 1.75rem;
+}
+
+h4 {
+    font-size: 1.5em;
+    margin-top: 2rem;
+}
+
+h5 {
+    font-size: 1.25em;
+    margin-top: 2.25rem;
+}
+
+h6 {
+    font-size: 1em;
+    margin-top: 2.5rem;
+}
+
+p {
+    margin-bottom: 1.5rem;
+}
+
+a {
+    color: #0366d6;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Header */
+header {
+    background: #0366d6;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header nav a {
+    margin: 0 15px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+header nav a:hover {
+    color: #dcdcdc;
+}
+
+/* Main content */
+main {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+main img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+main code {
+    background: #f5f5f5;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+pre {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 10px 0;
+    font-size: 0.875em;
+    color: #777;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    header nav a {
+        display: block;
+        margin: 5px 0;
+    }
+}
