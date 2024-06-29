@@ -1,7 +1,7 @@
 # Site settings
-title: kejishucloud博客
-description: 一个关于技术和编程的个人博客
-baseurl: "" # 站点的子路径，通常为""
+title: KeJiShuCloud Blog
+description: Technology changes life, a blog site that analyzes cutting-edge technology stacks
+baseurl: "" 
 url: "https://kejishucloud.github.io" # 网站的网址
 
 # Social settings
