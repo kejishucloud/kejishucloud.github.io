@@ -14,7 +14,7 @@ google_analytics: G-JPTTDNCLWD
 
 # Basic Site Settings
 locale                   : "en-US"
-title                    :  KeJiShuCloud Blog "Your Name / Site Title"
+title                    :  KeJiShuCloud Blog
 title_separator          : "-"
 name                     : &name "Your Name"
 description              : Technology changes life, a blog site that analyzes cutting-edge technology stacks &description "personal description"
