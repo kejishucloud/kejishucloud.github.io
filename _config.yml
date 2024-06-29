@@ -27,8 +27,10 @@ defaults:
 
 # Plugins
 plugins:
-  - jekyll-feed
+  - jekyll-paginate
   - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-feed
 
 # Exclude from processing
 exclude:
