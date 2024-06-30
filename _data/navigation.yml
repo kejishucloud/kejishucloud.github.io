@@ -1,18 +1,18 @@
 # main links links
 main:
+  - title: "News"
+    url: /news/
+
   - title: "LangChain"
     url: /LangChain/
 
   - title: "Agent"
     url: /Agent/
 
-  - title: "Teaching"
-    url: /teaching/    
-    
   - title: "Algorithm"
     url: /Algorithm/
         
-  - title: "Blog Posts"
+  - title: "Blog"
     url: /blog/
     
   - title: "Book"
