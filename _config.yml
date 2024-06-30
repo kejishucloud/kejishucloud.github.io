@@ -16,7 +16,7 @@ google_analytics: G-JPTTDNCLWD
 locale                   : "en-US"
 title                    :  KeJiShuCloud Blog
 title_separator          : "-"
-name                     : &name "Your Name"
+name                     : &name "kejishucloud"
 description              : Technology changes life, a blog site that analyzes cutting-edge technology stacks &description "personal description"
 url                      : https://kejishucloud.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
@@ -27,20 +27,20 @@ repository               : "kejishucloud/kejishucloud.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile.png"
-  name             : "Your Sidebar Name"
+  avatar           : "logo.jpg"
+  name             : "kejishucloud"
   pronouns         : # example: "she/her"
-  bio              : "Short biography for the left-hand sidebar"
+  bio              : "Technology changes life"
   location         : "Earth"
-  employer         : "Red Brick University"
+  employer         : "HYIT"
   uri              : # URL
-  email            : "none@example.org"
+  email            : "kejishucloud@gmail.com"
 
   # Academic websites
   arxiv            : # URL - Update with the correct link to your profile
   googlescholar    : "https://scholar.google.com/citations?user=PS_CX0AAAAAJ"
   impactstory      : # URL
-  orcid            : "http://orcid.org/yourorcidurl"
+  orcid            : "https://orcid.org/0009-0004-2505-6593"
   semantic         : # URL
   pubmed           : "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
   researchgate     : # URL

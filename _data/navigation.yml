@@ -1,22 +1,22 @@
 # main links links
 main:
-  - title: "Publications"
-    url: /publications/
+  - title: "LangChain"
+    url: /LangChain/
 
-  - title: "Talks"
-    url: /talks/    
+  - title: "Agent"
+    url: /Agent/
 
   - title: "Teaching"
     url: /teaching/    
     
-  - title: "Portfolio"
-    url: /portfolio/
+  - title: "Algorithm"
+    url: /Algorithm/
         
   - title: "Blog Posts"
-    url: /year-archive/
+    url: /blog/
     
-  - title: "CV"
-    url: /cv/
+  - title: "Book"
+    url: /book/
     
   - title: "Guide"
     url: /markdown/
