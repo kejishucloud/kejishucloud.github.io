@@ -4,13 +4,13 @@ main:
     url: /news/
 
   - title: "LangChain"
-    url: /LangChain/
+    url: /langchain/
 
   - title: "Agent"
-    url: /Agent/
+    url: /agent/
 
   - title: "Algorithm"
-    url: /Algorithm/
+    url: /algorithm/
         
   - title: "Blog"
     url: /blog/
