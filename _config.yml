@@ -233,6 +233,13 @@ defaults:
       comments: true
       share: true
       related: true
+  # _agents
+  - scope:
+      path: ""
+      type: agent
+    values:
+      layout: single
+      author_profile: true
   # _pages
   - scope:
       path: ""
