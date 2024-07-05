@@ -3,15 +3,15 @@ main:
   - title: "News"
     url: /news/
 
-  - title: "LangChain"
-    url: /langchain/
-
-  - title: "Agent"
-    url: /agent/
+  - title: "AIGC"
+    url: /aigc/
 
   - title: "Algorithm"
     url: /algorithm/
-        
+
+  - title: "Summarize"
+    url: /summarize/
+
   - title: "Blog"
     url: /blog/
     
