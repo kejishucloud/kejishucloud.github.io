@@ -40,8 +40,8 @@ layout: null
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":{{ page.title | jsonify }},"description":{{ page.description | jsonify }},"datePublished":"{{ page.date | date: '%Y-%m-%d' }}","dateModified":"{{ page.updated_at | date: '%Y-%m-%d' }}","inLanguage":"{{ lang }}","author":{"@type":"Person","name":"{{ page.author | escape }}"},"publisher":{"@type":"Organization","name":"KeJiShuCloud"},"mainEntityOfPage":{"@type":"WebPage","@id":"{{ page.url | absolute_url }}"}}</script>
 {% endif %}
 <link rel="alternate" type="application/atom+xml" title="KeJiShuCloud AI Research" href="{{ '/articles.xml' | absolute_url }}">
-<link rel="stylesheet" href="{{ '/assets/css/portal.css' | relative_url }}">
-<script src="{{ '/assets/js/portal.js' | relative_url }}" defer></script>
+<link rel="stylesheet" href="{{ '/assets/css/portal.css' | relative_url }}?v=edition2-20261013">
+<script src="{{ '/assets/js/portal.js' | relative_url }}?v=edition2-20261013" defer></script>
 </head>
 <body class="portal portal--{{ page.view }}">
 <a href="#main" class="skip-link">{% if lang == 'zh' %}跳转到正文{% elsif lang == 'ja' %}本文へ{% elsif lang == 'es' %}Ir al contenido{% else %}Skip to content{% endif %}</a>
