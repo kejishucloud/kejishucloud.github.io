@@ -1,51 +1,44 @@
-<header>
+# KeJiShuCloud — Global Technology & Practical AI
 
-<!--
-  <<< Author notes: Course header >>>
-  Include a 1280×640 image, course title in sentence case, and a concise description in emphasis.
-  In your repository settings: enable template repository, add your 1280×640 social image, auto delete head branches.
-  Add your open source license, GitHub uses MIT license.
--->
+Independent technology analysis and practical guides to AI at work, agent engineering, and AI tools.
 
-# GitHub Pages
+**Site:** https://kejishucloud.github.io  
+**Status:** multilingual editorial redesign under review  
+**Stack:** Jekyll, Liquid, GitHub Pages, responsive CSS, progressive JavaScript, optional WebGPU shaders.
 
-_Create a site or blog from your GitHub repositories with GitHub Pages._
+## Sections
+- [Technology signals](https://kejishucloud.github.io/frontier/)
+- [AI at work](https://kejishucloud.github.io/ai-work/)
+- [AI agents](https://kejishucloud.github.io/agents/)
+- [AI tools](https://kejishucloud.github.io/tools/)
 
-</header>
+Language homes: `/` (zh), `/en/`, `/es/`, `/ja/`. Core topic and about routes are mirrored per language.
 
-<!--
-  <<< Author notes: Step 3 >>>
-  Start this step by acknowledging the previous step.
-  Define terms and link to docs.github.com.
-  Historic note: previous version checked the homepage content was not empty.
--->
+## Architecture
+- `_layouts/portal.html`: unified home/topic/about layout and SEO alternates.
+- `_data/portal.json`: translated UI copy and source-backed starting guides.
+- `_pages/portal-*.md`: Chinese topic routes.
+- `en/`, `es/`, `ja/`: alternate locales.
+- `assets/css/portal.css`: editorial responsive design system.
+- `assets/js/portal.js`: progressive navigation and optional MIT-licensed Shaders effect.
+- `scripts/validate_portal.py`: structural content validation.
 
-## Step 3: Customize your homepage
+## Work with the site
+1. Use a branch and create a PR; do not edit production directly.
+2. Edit `_data/portal.json` to update localizations and field guides.
+3. Run `python3 scripts/validate_portal.py`.
+4. Review the generated Jekyll pages in a browser before merging.
 
-_Nice work setting the theme! :sparkles:_
+## Planning and standards
+- [Transformation roadmap](docs/ROADMAP.md)
+- [Product brief](PRODUCT.md)
+- [Design system](DESIGN.md)
+- [Editorial and localization handbook](docs/EDITORIAL.md)
 
-You can customize your homepage by adding content to either an `index.md` file or the `README.md` file. GitHub Pages first looks for an `index.md` file. Your repository has an `index.md` file so we can update it to include your personalized content.
+### External inspiration
+[Shaders](https://github.com/shader-effects-inc/shaders) (MIT) for the optional WebGPU engine; [Impeccable](https://github.com/pbakaus/impeccable) (Apache-2.0) for design practices. Their separate hosted platform assets and commercial presets are not copied here.
 
-### :keyboard: Activity: Create your homepage
+Legacy Academic Pages content remains until migration/redirect inventory is reviewed. Some demo articles still exist; this PR introduces new primary navigation rather than claiming the entire archive is production-ready.
 
-1. Browse to the `index.md` file in the `my-pages` branch.
-1. In the upper right corner, open the file editor.
-1. Type the content you want on your homepage. You can use Markdown formatting on this page.
-1. (optional) You can also modify `title:` or just ignore it for now. We'll discuss it in the next step.
-1. Commit your changes to the `my-pages` branch.
-1. Wait about 20 seconds then refresh this page (the one you're following instructions from). [GitHub Actions](https://docs.github.com/en/actions) will automatically update to the next step.
-
-<footer>
-
-<!--
-  <<< Author notes: Footer >>>
-  Add a link to get support, GitHub status page, code of conduct, license link.
--->
-
----
-
-Get help: [Post in our discussion board](https://github.com/orgs/skills/discussions/categories/github-pages) &bull; [Review the GitHub status page](https://www.githubstatus.com/)
-
-&copy; 2023 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
-
-</footer>
+## License
+Repository license: MIT; verify individual content and third-party asset licenses separately.
