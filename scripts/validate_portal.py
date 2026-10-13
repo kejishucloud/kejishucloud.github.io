@@ -126,6 +126,30 @@ class PortalValidator:
                 self.expect(len(article_body) >= 500, f"{lang}/{key}: article body is too short")
                 self.expect("https://" in article_body, f"{lang}/{key}: no primary references")
 
+    def verify_visual_contract(self) -> None:
+        """
+        阻止已弃用的绿色主题在后续提交中重新出现。
+
+        此检查是配色与页面结构的回归保护，不能替代浏览器
+        截图、对比度或真实设备上的 UI 检查。
+
+        :return: None
+        """
+        styles = (self.root / "assets/css/portal.css").read_text(encoding="utf-8")
+        scripts = (self.root / "assets/js/portal.js").read_text(encoding="utf-8")
+        layout = (self.root / "_layouts/portal.html").read_text(encoding="utf-8")
+        runtime = (styles + scripts + layout).lower()
+        for obsolete in ("#0c1716", "#142821", "#d9ff79", "#143a30", "#8caa61"):
+            self.expect(obsolete not in runtime,
+                        f"Rejected old theme color is still used: {obsolete}")
+        for token in ("--bg: #f8f9fc", "--navy: #111b35", "--accent: #3659f5"):
+            self.expect(token in styles, f"New design token missing: {token}")
+        for marker in ("class=\"hero-visual\"", "class=\"visual-core\"",
+                       'content="light"'):
+            self.expect(marker in layout, f"New editorial layout missing: {marker}")
+        for breakpoint in ("max-width: 1140px", "max-width: 860px", "max-width: 640px"):
+            self.expect(breakpoint in styles, f"Responsive breakpoint missing: {breakpoint}")
+
     def verify_discovery_assets(self) -> None:
         """
         保证搜索和 Feed 模板与内容集合已纳入仓库。
@@ -175,6 +199,7 @@ class PortalValidator:
         self.verify_routes()
         self.verify_articles()
         self.verify_discovery_assets()
+        self.verify_visual_contract()
         self.verify_assets()
         if self.errors:
             for item in self.errors:
