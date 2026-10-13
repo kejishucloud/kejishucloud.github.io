@@ -1,0 +1,25 @@
+---
+layout: null
+permalink: /articles.xml
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <title>KeJiShuCloud / AI Research Notes</title>
+  <id>{{ '/' | absolute_url }}</id>
+  <link href="{{ '/articles.xml' | absolute_url }}" rel="self" />
+  <link href="{{ '/' | absolute_url }}" />
+  <updated>{{ site.time | date_to_xmlschema }}</updated>
+  {% assign published = site.articles | where: "review_status", "approved" | sort: "date" | reverse %}
+  {% for article in published limit: 30 %}
+  <entry>
+    <title>{{ article.title | xml_escape }}</title>
+    <id>{{ article.url | absolute_url }}</id>
+    <link href="{{ article.url | absolute_url }}" />
+    <updated>{{ article.updated_at | date_to_xmlschema }}</updated>
+    <published>{{ article.date | date_to_xmlschema }}</published>
+    <summary>{{ article.description | xml_escape }}</summary>
+    <category term="{{ article.topic | xml_escape }}" />
+    <author><name>{{ article.author | xml_escape }}</name></author>
+  </entry>
+  {% endfor %}
+</feed>
