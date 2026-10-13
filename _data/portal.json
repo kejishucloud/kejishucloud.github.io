@@ -1,0 +1,574 @@
+{
+  "locales": [
+    [
+      "zh",
+      "简体中文",
+      "zh-CN"
+    ],
+    [
+      "en",
+      "English",
+      "en"
+    ],
+    [
+      "es",
+      "Español",
+      "es"
+    ],
+    [
+      "ja",
+      "日本語",
+      "ja"
+    ]
+  ],
+  "order": [
+    "frontier",
+    "ai-work",
+    "agents",
+    "tools"
+  ],
+  "topics": {
+    "frontier": {
+      "zh": [
+        "科技前沿",
+        "以可验证证据解读大模型、算力、研究与科技政策。"
+      ],
+      "en": [
+        "Technology Signals",
+        "Evidence-led analysis of models, computing, research and AI policy."
+      ],
+      "es": [
+        "Tecnología",
+        "Análisis con evidencias sobre modelos, investigación y políticas de IA."
+      ],
+      "ja": [
+        "技術トレンド",
+        "モデル、研究、計算基盤、AI政策を根拠から読み解きます。"
+      ]
+    },
+    "ai-work": {
+      "zh": [
+        "AI 办公",
+        "用可复用的流程改善写作、研究、会议和数据工作。"
+      ],
+      "en": [
+        "AI at Work",
+        "Repeatable workflows for writing, research, meetings and data."
+      ],
+      "es": [
+        "IA en el trabajo",
+        "Flujos prácticos para escribir, investigar y analizar datos."
+      ],
+      "ja": [
+        "AI仕事術",
+        "文章、調査、会議、データ作業にAIを実用化します。"
+      ]
+    },
+    "agents": {
+      "zh": [
+        "AI 智能体",
+        "从模型、工具调用、记忆与评估构建可靠智能体。"
+      ],
+      "en": [
+        "AI Agents",
+        "Build reliable agents with models, tools, memory and evaluations."
+      ],
+      "es": [
+        "Agentes de IA",
+        "Agentes fiables con modelos, herramientas, memoria y evaluación."
+      ],
+      "ja": [
+        "AIエージェント",
+        "モデル、ツール、記憶、評価を備えた信頼性ある設計。"
+      ]
+    },
+    "tools": {
+      "zh": [
+        "AI 工具",
+        "以真实任务、成本、隐私和可靠性为标准选工具。"
+      ],
+      "en": [
+        "AI Tools",
+        "Choose tools by real tasks, cost, privacy and reliability."
+      ],
+      "es": [
+        "Herramientas IA",
+        "Elige herramientas según tareas, costes, privacidad y fiabilidad."
+      ],
+      "ja": [
+        "AIツール",
+        "実際の業務、費用、プライバシー、信頼性で比較。"
+      ]
+    }
+  },
+  "copy": {
+    "zh": {
+      "tag": "独立科技观察 / 面向全球",
+      "hero": "看懂技术变化。",
+      "accent": "把 AI 用在现实里。",
+      "lead": "持续分析科技趋势、AI 办公、AI 智能体和工具生态。减少噪音，提供可验证的判断与可复用的方法。",
+      "topics": "研究方向",
+      "topicsLead": "不是罗列产品，而是解释技术解决的问题、适用条件和限制。",
+      "guide": "实践指南",
+      "guideLead": "基于官方资料与真实工作流程的可执行起点。",
+      "about": "关于与编辑准则",
+      "aboutTitle": "编辑原则",
+      "aboutLead": "用证据解释科技，用方法连接实践。",
+      "standard": "我们的内容区分事实、分析与观点；始终保留参考来源，标注风险与局限。不会将厂商宣称直接写成结论。",
+      "visit": "查看专题",
+      "source": "原始资料",
+      "caution": "注意事项",
+      "back": "返回首页",
+      "nav": "菜单",
+      "lang": "切换语言",
+      "cta": "浏览研究方向",
+      "explore": "阅读编辑原则",
+      "footer": "独立思考 · 可操作的知识 · 全球视野",
+      "guides": {
+        "frontier": [
+          [
+            "如何评估一次模型发布",
+            "记录模型版本、测试环境、独立评价与自己的业务样本。",
+            "排行榜不能代替真实业务测试。",
+            "Hugging Face Evaluate",
+            "https://huggingface.co/docs/evaluate/index"
+          ],
+          [
+            "研究论文到落地产品",
+            "核查方法、局限、复现代码、延迟与部署成本。",
+            "预印本不等于经过独立验证。",
+            "arXiv",
+            "https://arxiv.org/"
+          ],
+          [
+            "AI 治理与风险",
+            "建立场景风险清单，配置人工复核和事件记录。",
+            "不同地区的监管要求并不一致。",
+            "NIST AI RMF",
+            "https://www.nist.gov/itl/ai-risk-management-framework"
+          ]
+        ],
+        "ai-work": [
+          [
+            "AI 辅助写作与报告",
+            "先定义受众、任务和可信来源，再生成草稿并逐项核验引用。",
+            "机密文档须经授权后使用外部 AI 服务。",
+            "Microsoft 365 Copilot",
+            "https://learn.microsoft.com/en-us/copilot/microsoft-365/"
+          ],
+          [
+            "有出处的 AI 研究",
+            "保存原始链接，区分引述、摘要和推断，核对自动引用。",
+            "模型生成的引用可能不存在。",
+            "NotebookLM",
+            "https://support.google.com/notebooklm/"
+          ],
+          [
+            "数据表格与自动分析",
+            "核对数据粒度、单位和缺失值，使用公式或代码独立复算。",
+            "不能把估计值当作实测结果。",
+            "pandas",
+            "https://pandas.pydata.org/docs/"
+          ]
+        ],
+        "agents": [
+          [
+            "工作流还是自主智能体",
+            "明确任务状态、退出条件和哪些操作需要人工批准。",
+            "自动化程度越高，权限与预算限制越重要。",
+            "LangGraph",
+            "https://docs.langchain.com/oss/python/langgraph/overview"
+          ],
+          [
+            "工具协议与权限控制",
+            "按最小权限设计工具 Schema、超时、重试及调用审计。",
+            "外部检索内容可能携带提示注入。",
+            "MCP",
+            "https://modelcontextprotocol.io/docs/getting-started/intro"
+          ],
+          [
+            "智能体评测体系",
+            "结合任务成功率、轨迹、成本、延迟与安全测试。",
+            "演示成功不代表生产可靠性。",
+            "OpenAI Evals",
+            "https://platform.openai.com/docs/guides/evals"
+          ]
+        ],
+        "tools": [
+          [
+            "通用 AI 助手选型",
+            "用相同任务比较 ChatGPT、Claude 与 Gemini 的能力和成本。",
+            "价格和隐私条款可能改变。",
+            "Claude",
+            "https://www.anthropic.com/claude"
+          ],
+          [
+            "无代码与工作流自动化",
+            "为 n8n、Zapier 流程加入失败重试、审核与幂等。",
+            "连接器可能请求超出需求的权限。",
+            "n8n",
+            "https://docs.n8n.io/"
+          ],
+          [
+            "Agent 构建平台",
+            "比较 Dify 与代码框架的可扩展性、维护成本和安全性。",
+            "漂亮的演示不等于稳定的生产系统。",
+            "Dify",
+            "https://docs.dify.ai/"
+          ]
+        ]
+      }
+    },
+    "en": {
+      "tag": "INDEPENDENT TECH JOURNAL / GLOBAL",
+      "hero": "Make sense of change.",
+      "accent": "Make AI useful.",
+      "lead": "Independent signals on emerging technology, AI productivity, agent engineering, and practical tools. Fewer headlines. More evidence, context and repeatable methods.",
+      "topics": "Fields of research",
+      "topicsLead": "Beyond product lists: what works, for whom, and under which constraints.",
+      "guide": "Field guides",
+      "guideLead": "Actionable entry points grounded in primary sources and real workflows.",
+      "about": "About & standards",
+      "aboutTitle": "Editorial principles",
+      "aboutLead": "Understand the technology. Put the method to work.",
+      "standard": "We distinguish facts, analysis and opinion. Every guide references primary sources, trade-offs and limitations. Vendor marketing is never sufficient evidence.",
+      "visit": "Explore",
+      "source": "Primary source",
+      "caution": "Watch out",
+      "back": "Back home",
+      "nav": "Navigation",
+      "lang": "Select language",
+      "cta": "Explore the research",
+      "explore": "Our editorial standards",
+      "footer": "Independent perspective · Practical methods · Global audience",
+      "guides": {
+        "frontier": [
+          [
+            "Read a model announcement",
+            "Check model versions, test setup, independent evaluations, and your own tasks.",
+            "A single leaderboard rarely predicts production results.",
+            "Hugging Face Evaluate",
+            "https://huggingface.co/docs/evaluate/index"
+          ],
+          [
+            "Research to production",
+            "Read the method and limitations; verify code, latency and deployment costs.",
+            "Preprints are not independently validated claims.",
+            "arXiv",
+            "https://arxiv.org/"
+          ],
+          [
+            "AI risk and governance",
+            "Define concrete risks, human review and incident monitoring.",
+            "Requirements differ across jurisdictions.",
+            "NIST AI RMF",
+            "https://www.nist.gov/itl/ai-risk-management-framework"
+          ]
+        ],
+        "ai-work": [
+          [
+            "Writing and reporting with AI",
+            "Specify the audience and trusted sources; draft, then verify claims and references.",
+            "Do not upload confidential content to unapproved services.",
+            "Microsoft 365 Copilot",
+            "https://learn.microsoft.com/en-us/copilot/microsoft-365/"
+          ],
+          [
+            "Research with traceable sources",
+            "Keep original URLs, distinguish quotation from inference, and verify citations.",
+            "AI-generated citations can be fabricated.",
+            "NotebookLM",
+            "https://support.google.com/notebooklm/"
+          ],
+          [
+            "AI for spreadsheet analysis",
+            "Validate units, grain and missingness; independently reproduce important numbers.",
+            "Estimates must not be presented as observed data.",
+            "pandas",
+            "https://pandas.pydata.org/docs/"
+          ]
+        ],
+        "agents": [
+          [
+            "Workflow or autonomous agent?",
+            "Define state, stopping conditions and human approval boundaries.",
+            "More autonomy requires stricter access and budget controls.",
+            "LangGraph",
+            "https://docs.langchain.com/oss/python/langgraph/overview"
+          ],
+          [
+            "Tools and least privilege",
+            "Define schemas, timeouts, retries and audit records for tool calls.",
+            "Retrieved text may contain prompt injection.",
+            "MCP",
+            "https://modelcontextprotocol.io/docs/getting-started/intro"
+          ],
+          [
+            "Evaluating agents",
+            "Test outcomes, trajectories, costs, latency and adversarial cases.",
+            "A good demo does not establish production reliability.",
+            "OpenAI Evals",
+            "https://platform.openai.com/docs/guides/evals"
+          ]
+        ],
+        "tools": [
+          [
+            "General AI assistants",
+            "Compare ChatGPT, Claude and Gemini using identical, representative tasks.",
+            "Pricing and privacy terms can change.",
+            "Claude",
+            "https://www.anthropic.com/claude"
+          ],
+          [
+            "No-code and automation",
+            "Build reliable n8n and Zapier workflows with retries, approvals and idempotency.",
+            "Connector permissions may be broader than necessary.",
+            "n8n",
+            "https://docs.n8n.io/"
+          ],
+          [
+            "Agent builders",
+            "Compare Dify and code-first frameworks on maintenance, control and security.",
+            "A polished demo does not imply operational readiness.",
+            "Dify",
+            "https://docs.dify.ai/"
+          ]
+        ]
+      }
+    },
+    "es": {
+      "tag": "TECNOLOGÍA INDEPENDIENTE / GLOBAL",
+      "hero": "Entiende el cambio.",
+      "accent": "Haz útil la IA.",
+      "lead": "Tecnología emergente, productividad con IA, agentes y herramientas prácticas. Menos ruido y más evidencias, contexto y métodos reproducibles.",
+      "topics": "Áreas de investigación",
+      "topicsLead": "Más allá de las listas: qué funciona, para quién y con qué límites.",
+      "guide": "Guías prácticas",
+      "guideLead": "Métodos útiles basados en fuentes originales.",
+      "about": "Sobre nosotros",
+      "aboutTitle": "Principios editoriales",
+      "aboutLead": "Explicamos la tecnología y su aplicación responsable.",
+      "standard": "Distinguimos hechos, análisis y opiniones. Citamos fuentes y explicamos límites, costes y riesgos. La publicidad no es evidencia.",
+      "visit": "Explorar",
+      "source": "Fuente original",
+      "caution": "Precaución",
+      "back": "Inicio",
+      "nav": "Navegación",
+      "lang": "Idioma",
+      "cta": "Explorar temas",
+      "explore": "Principios editoriales",
+      "footer": "Perspectiva independiente · Métodos prácticos · Visión global",
+      "guides": {
+        "frontier": [
+          [
+            "Evaluar anuncios de modelos",
+            "Comprueba versiones, pruebas y evaluaciones independientes.",
+            "Una clasificación no representa todos los usos.",
+            "Hugging Face Evaluate",
+            "https://huggingface.co/docs/evaluate/index"
+          ],
+          [
+            "De la investigación al producto",
+            "Revisa métodos, limitaciones, código, latencia y costes.",
+            "Un preprint necesita verificación.",
+            "arXiv",
+            "https://arxiv.org/"
+          ],
+          [
+            "Gobernanza de IA",
+            "Define riesgos, revisión humana y seguimiento de incidentes.",
+            "Las normas varían según la región.",
+            "NIST AI RMF",
+            "https://www.nist.gov/itl/ai-risk-management-framework"
+          ]
+        ],
+        "ai-work": [
+          [
+            "Documentos con IA",
+            "Define lectores y fuentes; comprueba cifras y citas.",
+            "No cargues datos confidenciales sin autorización.",
+            "Microsoft 365 Copilot",
+            "https://learn.microsoft.com/en-us/copilot/microsoft-365/"
+          ],
+          [
+            "Investigación con fuentes",
+            "Guarda enlaces y separa citas de inferencias.",
+            "Las referencias generadas pueden ser falsas.",
+            "NotebookLM",
+            "https://support.google.com/notebooklm/"
+          ],
+          [
+            "Análisis de datos",
+            "Comprueba unidades y ausencias; recalcula cifras críticas.",
+            "Distingue estimaciones de observaciones.",
+            "pandas",
+            "https://pandas.pydata.org/docs/"
+          ]
+        ],
+        "agents": [
+          [
+            "Flujos y agentes",
+            "Define estados, límites de ejecución y aprobaciones.",
+            "La autonomía exige límites de permisos y coste.",
+            "LangGraph",
+            "https://docs.langchain.com/oss/python/langgraph/overview"
+          ],
+          [
+            "Herramientas y permisos",
+            "Especifica esquemas, reintentos y auditoría.",
+            "Las fuentes externas pueden incluir inyección de instrucciones.",
+            "MCP",
+            "https://modelcontextprotocol.io/docs/getting-started/intro"
+          ],
+          [
+            "Evaluación de agentes",
+            "Mide resultados, trazas, coste y seguridad.",
+            "Una demostración no garantiza fiabilidad.",
+            "OpenAI Evals",
+            "https://platform.openai.com/docs/guides/evals"
+          ]
+        ],
+        "tools": [
+          [
+            "Asistentes generales",
+            "Compara ChatGPT, Claude y Gemini con tareas iguales.",
+            "Precios y condiciones pueden cambiar.",
+            "Claude",
+            "https://www.anthropic.com/claude"
+          ],
+          [
+            "Automatización",
+            "Usa n8n y Zapier con reintentos y aprobaciones.",
+            "Revisa los permisos de cada integración.",
+            "n8n",
+            "https://docs.n8n.io/"
+          ],
+          [
+            "Plataformas de agentes",
+            "Compara Dify y frameworks por costes y control.",
+            "Una demo no demuestra fiabilidad.",
+            "Dify",
+            "https://docs.dify.ai/"
+          ]
+        ]
+      }
+    },
+    "ja": {
+      "tag": "独立系テクノロジー / グローバル",
+      "hero": "変化を理解する。",
+      "accent": "AIを実務に活かす。",
+      "lead": "最新技術、AI業務活用、エージェント設計、ツール選びを分析。ニュースの量よりも根拠、背景、再利用できる方法を重視します。",
+      "topics": "研究テーマ",
+      "topicsLead": "機能だけでなく、適用条件と限界を明確にします。",
+      "guide": "実践ガイド",
+      "guideLead": "一次資料と実践に基づく評価の出発点。",
+      "about": "編集方針",
+      "aboutTitle": "編集原則",
+      "aboutLead": "技術を理解し、責任ある実務へつなげる。",
+      "standard": "事実、分析、意見を分け、出典、限界、リスクを明示します。企業の宣伝はそれ自体では証拠になりません。",
+      "visit": "詳しく見る",
+      "source": "一次資料",
+      "caution": "注意",
+      "back": "ホーム",
+      "nav": "メニュー",
+      "lang": "言語",
+      "cta": "研究テーマを見る",
+      "explore": "編集原則",
+      "footer": "独立した視点 · 実践的方法 · グローバル",
+      "guides": {
+        "frontier": [
+          [
+            "モデル発表を評価する",
+            "バージョン、条件、第三者の評価、実業務を確認する。",
+            "ランキングだけで実力は判断できません。",
+            "Hugging Face Evaluate",
+            "https://huggingface.co/docs/evaluate/index"
+          ],
+          [
+            "研究から製品へ",
+            "手法、制約、コード、遅延、運用費用を確認する。",
+            "プレプリントは独立検証ではありません。",
+            "arXiv",
+            "https://arxiv.org/"
+          ],
+          [
+            "AIリスク管理",
+            "用途別のリスクと人間による承認を整える。",
+            "法規制は地域で異なります。",
+            "NIST AI RMF",
+            "https://www.nist.gov/itl/ai-risk-management-framework"
+          ]
+        ],
+        "ai-work": [
+          [
+            "AIで文書を作る",
+            "対象読者と情報源を指定し、数字と引用を確認する。",
+            "機密情報は承認なしに外部送信しない。",
+            "Microsoft 365 Copilot",
+            "https://learn.microsoft.com/en-us/copilot/microsoft-365/"
+          ],
+          [
+            "出典が追える調査",
+            "元リンクを残し、引用と推測を区別する。",
+            "生成された引用は存在しないことがあります。",
+            "NotebookLM",
+            "https://support.google.com/notebooklm/"
+          ],
+          [
+            "表計算のAI支援",
+            "単位と欠損を確認し、重要な数値を再計算する。",
+            "推定値を実測値と混同しない。",
+            "pandas",
+            "https://pandas.pydata.org/docs/"
+          ]
+        ],
+        "agents": [
+          [
+            "フローかエージェントか",
+            "状態、終了条件、人的承認を設計する。",
+            "自律性には費用と権限の制限が必要です。",
+            "LangGraph",
+            "https://docs.langchain.com/oss/python/langgraph/overview"
+          ],
+          [
+            "ツールの権限",
+            "スキーマ、タイムアウト、再試行、監査を設定する。",
+            "外部テキストにはプロンプト注入の危険があります。",
+            "MCP",
+            "https://modelcontextprotocol.io/docs/getting-started/intro"
+          ],
+          [
+            "エージェント評価",
+            "結果、実行履歴、費用、安全性をテストする。",
+            "デモの成功は本番の信頼性を保証しません。",
+            "OpenAI Evals",
+            "https://platform.openai.com/docs/guides/evals"
+          ]
+        ],
+        "tools": [
+          [
+            "汎用AIアシスタント",
+            "ChatGPT、Claude、Geminiを同じ課題で比較する。",
+            "価格と規約は変更されます。",
+            "Claude",
+            "https://www.anthropic.com/claude"
+          ],
+          [
+            "自動化ツール",
+            "n8nとZapierに再試行、承認、冪等性を設ける。",
+            "連携権限を確認してください。",
+            "n8n",
+            "https://docs.n8n.io/"
+          ],
+          [
+            "エージェント開発",
+            "Difyとコード基盤の保守性と安全性を比較する。",
+            "見栄えの良いデモは運用品質ではありません。",
+            "Dify",
+            "https://docs.dify.ai/"
+          ]
+        ]
+      }
+    }
+  }
+}

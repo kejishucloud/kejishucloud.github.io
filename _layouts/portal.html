@@ -1,0 +1,67 @@
+---
+layout: null
+---
+{% assign lang = page.lang | default: 'zh' %}
+{% assign t = site.data.portal.copy[lang] %}
+{% assign topics = site.data.portal.topics %}
+{% assign topic = topics[page.topic][lang] %}
+{% assign content_rows = t.guides[page.topic] %}
+{% assign prefix = '' %}{% unless lang == 'zh' %}{% capture prefix %}/{{ lang }}{% endcapture %}{% endunless %}
+<!doctype html>
+<html lang="{% for locale in site.data.portal.locales %}{% if locale[0] == lang %}{{ locale[2] }}{% endif %}{% endfor %}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0c1716">
+<meta name="color-scheme" content="dark">
+<title>{% if page.view == 'home' %}KeJiShuCloud — {{ t.hero | escape }}{% elsif page.view == 'about' %}{{ t.aboutTitle | escape }} — KeJiShuCloud{% else %}{{ topic[0] | escape }} — KeJiShuCloud{% endif %}</title>
+<meta name="description" content="{% if page.view == 'home' %}{{ t.lead | escape }}{% elsif page.view == 'about' %}{{ t.aboutLead | escape }}{% else %}{{ topic[1] | escape }}{% endif %}">
+<link rel="canonical" href="{{ page.url | absolute_url }}">
+{% for locale in site.data.portal.locales %}{% capture translated_url %}{% unless locale[0] == 'zh' %}/{{ locale[0] }}{% endunless %}{% if page.view == 'topic' %}/{{ page.topic }}/{% elsif page.view == 'about' %}/about/{% else %}/{% endif %}{% endcapture %}
+<link rel="alternate" hreflang="{{ locale[2] }}" href="{{ translated_url | absolute_url }}">
+{% endfor %}
+{% capture default_url %}{% if page.view == 'topic' %}/{{ page.topic }}/{% elsif page.view == 'about' %}/about/{% else %}/{% endif %}{% endcapture %}
+<link rel="alternate" hreflang="x-default" href="{{ default_url | absolute_url }}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="KeJiShuCloud">
+<meta property="og:title" content="{% if page.view == 'topic' %}{{ topic[0] | escape }}{% else %}KeJiShuCloud{% endif %}">
+<meta property="og:description" content="{{ t.lead | escape }}">
+<meta property="og:url" content="{{ page.url | absolute_url }}">
+<link rel="stylesheet" href="{{ '/assets/css/portal.css' | relative_url }}">
+<script src="{{ '/assets/js/portal.js' | relative_url }}" defer></script>
+</head>
+<body class="portal portal--{{ page.view }}">
+<a href="#main" class="skip-link">{% if lang == 'zh' %}跳转到正文{% elsif lang == 'ja' %}本文へ{% elsif lang == 'es' %}Ir al contenido{% else %}Skip to content{% endif %}</a>
+<header class="site-header"><div class="wrap header-inner">
+<a class="brand" href="{{ prefix }}/" aria-label="KeJiShuCloud home"><b class="brand-symbol" aria-hidden="true">✳</b><span>KEJISHU<span class="brand-thin">CLOUD</span><span class="brand-dot">.</span></span></a>
+<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="{{ t.nav | escape }}"><span></span><span></span></button>
+<nav class="main-nav" id="main-nav" aria-label="{{ t.nav | escape }}">
+{% for key in site.data.portal.order %}{% assign item = topics[key][lang] %}<a href="{{ prefix }}/{{ key }}/" {% if page.topic == key %}aria-current="page"{% endif %}>{{ item[0] | escape }}</a>{% endfor %}
+<a href="{{ prefix }}/about/" {% if page.view == 'about' %}aria-current="page"{% endif %}>{{ t.about | escape }}</a>
+</nav>
+<div class="language"><label class="sr-only" for="language-picker">{{ t.lang | escape }}</label><span aria-hidden="true">◎</span><select id="language-picker" aria-label="{{ t.lang | escape }}">
+{% for locale in site.data.portal.locales %}{% capture alternate %}{% unless locale[0] == 'zh' %}/{{ locale[0] }}{% endunless %}{% if page.view == 'topic' %}/{{ page.topic }}/{% elsif page.view == 'about' %}/about/{% else %}/{% endif %}{% endcapture %}<option value="{{ alternate | relative_url }}" {% if locale[0] == lang %}selected{% endif %}>{{ locale[1] | escape }}</option>{% endfor %}
+</select></div></div></header>
+<main id="main">
+{% if page.view == 'home' %}
+<section class="hero"><div class="hero-ambient" aria-hidden="true"><div class="shader-mount" data-shader-root></div></div>
+<div class="wrap hero-body"><div class="hero-copy"><p class="eyebrow"><i class="dot"></i>{{ t.tag | escape }} <span class="eyebrow-line"></span> 2026</p><h1>{{ t.hero | escape }}<br><em>{{ t.accent | escape }}</em></h1>
+<p class="hero-lead">{{ t.lead | escape }}</p><div class="hero-ctas"><a class="button-primary" href="#topics">{{ t.cta | escape }} <span aria-hidden="true">↗</span></a><a class="button-secondary" href="{{ prefix }}/about/">{{ t.explore | escape }} ↗</a></div></div>
+<div class="hero-insignia" aria-hidden="true"><span>KEJISHUCLOUD / SIGNAL</span><strong>✳</strong><span>TECHNOLOGY IN CONTEXT</span></div></div>
+<div class="wrap hero-bottom"><span>AI / TECH / WORKFLOWS / AGENTS</span><span>GLOBAL EDITION ↓</span></div></section>
+<section class="content-section wrap" id="topics"><div class="section-heading"><p class="eyebrow">FIELD NOTES / 001</p><h2>{{ t.topics | escape }}</h2><p>{{ t.topicsLead | escape }}</p></div>
+<div class="topic-grid">{% for key in site.data.portal.order %}{% assign item = topics[key][lang] %}<a href="{{ prefix }}/{{ key }}/" class="topic-card topic-card--{{ key }}"><div class="card-top"><span>0{{ forloop.index }} / {{ key | upcase }}</span><span class="arrow">↗</span></div><div><h3>{{ item[0] | escape }}</h3><p>{{ item[1] | escape }}</p></div></a>{% endfor %}</div></section>
+<section class="reading-section"><div class="wrap"><div class="section-heading"><p class="eyebrow">EDITOR'S DESK / 002</p><h2>{{ t.guide | escape }}</h2><p>{{ t.guideLead | escape }}</p></div>
+<div class="reading-list">{% for key in site.data.portal.order %}{% assign item = topics[key][lang] %}{% assign first_guide = t.guides[key][0] %}<a class="reading-row" href="{{ prefix }}/{{ key }}/#guides"><span class="reading-count">0{{ forloop.index }}</span><span class="reading-name"><small>{{ item[0] | escape }}</small><strong>{{ first_guide[0] | escape }}</strong><span>{{ first_guide[1] | escape }}</span></span><b aria-hidden="true">↗</b></a>{% endfor %}</div></div></section>
+<section class="manifesto wrap"><span class="manifesto-quote" aria-hidden="true">“</span><div><p class="eyebrow">OUR METHOD / 003</p><h2>{{ t.aboutTitle | escape }}</h2><p>{{ t.standard | escape }}</p><a class="inline-link" href="{{ prefix }}/about/">{{ t.explore | escape }} ↗</a></div></section>
+{% elsif page.view == 'topic' %}
+<section class="page-intro wrap"><a class="back-link" href="{{ prefix }}/">← {{ t.back | escape }}</a><p class="eyebrow"><i class="dot"></i>FIELD NOTES / {{ page.topic | upcase }}</p><h1>{{ topic[0] | escape }}<span class="brand-dot">.</span></h1><p class="page-deck">{{ topic[1] | escape }}</p><div class="intro-rule"><span>KEJISHUCLOUD / RESEARCH</span><span>{{ t.guideLead | escape }}</span></div></section>
+<section class="content-section wrap" id="guides"><div class="section-heading"><p class="eyebrow">PRACTICAL FRAMEWORK / 001</p><h2>{{ t.guide | escape }}</h2><p>{{ t.topicsLead | escape }}</p></div>
+<div class="guide-list">{% for row in content_rows %}<article class="guide-row"><div><span class="guide-index">/ 0{{ forloop.index }}</span><h3>{{ row[0] | escape }}</h3><p>{{ row[1] | escape }}</p></div><div class="guide-details"><p class="risk"><b>{{ t.caution | escape }} /</b> {{ row[2] | escape }}</p><a class="inline-link" href="{{ row[4] | escape }}" target="_blank" rel="noopener noreferrer">{{ t.source | escape }} · {{ row[3] | escape }} ↗</a></div></article>{% endfor %}</div></section>
+{% elsif page.view == 'about' %}
+<section class="page-intro wrap"><a class="back-link" href="{{ prefix }}/">← {{ t.back | escape }}</a><p class="eyebrow"><i class="dot"></i>INDEPENDENCE / EVIDENCE / PRACTICE</p><h1>{{ t.aboutTitle | escape }}<span class="brand-dot">.</span></h1><p class="page-deck">{{ t.aboutLead | escape }}</p></section>
+<section class="content-section wrap"><div class="manifesto-statement"><p class="eyebrow">OUR EDITORIAL STANDARD</p><p>{{ t.standard | escape }}</p></div><div class="about-notes"><article><span>01 / RESEARCH</span><h2>{% if lang == 'zh' %}先理解，再推荐{% elsif lang == 'ja' %}理解してから選ぶ{% elsif lang == 'es' %}Comprender antes de recomendar{% else %}Understand before recommending{% endif %}</h2><p>{% if lang == 'zh' %}优先参考官方文档、研究论文及可复现的演示。事实、解释和推测应有清晰边界。{% elsif lang == 'ja' %}公式資料、論文、再現可能な検証を優先し、事実と解釈を区別します。{% elsif lang == 'es' %}Priorizamos documentación, estudios y pruebas reproducibles, distinguiendo hechos de interpretaciones.{% else %}We prefer primary documentation, research and reproducible tests, separating findings from interpretation.{% endif %}</p></article><article><span>02 / GLOBAL</span><h2>{% if lang == 'zh' %}真正面向全球{% elsif lang == 'ja' %}世界の読者へ{% elsif lang == 'es' %}Para una audiencia global{% else %}Built for a global audience{% endif %}</h2><p>{% if lang == 'zh' %}所有核心栏目提供四种语言的版本；保证链接、主题和关键术语一致。{% elsif lang == 'ja' %}主要なページは4言語で提供し、リンクと用語を一致させます。{% elsif lang == 'es' %}Las secciones esenciales se ofrecen en cuatro idiomas con enlaces coherentes.{% else %}Core pages are available in four languages, with consistent links and terminology.{% endif %}</p></article></div></section>
+{% endif %}
+</main>
+<footer class="site-footer"><div class="wrap footer-main"><a class="brand" href="{{ prefix }}/"><b class="brand-symbol" aria-hidden="true">✳</b><span>KEJISHU<span class="brand-thin">CLOUD</span><span class="brand-dot">.</span></span></a><p>{{ t.footer | escape }}</p></div><div class="wrap footer-legal"><span>© {{ site.time | date: '%Y' }} KEJISHUCLOUD</span><span>INDEPENDENT · GLOBAL · PRACTICAL</span><a href="https://github.com/kejishucloud/kejishucloud.github.io" target="_blank" rel="noopener noreferrer">GITHUB ↗</a></div></footer>
+</body></html>

@@ -1,0 +1,23 @@
+name: Editorial portal quality
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate localized pages and content
+        run: python3 scripts/validate_portal.py
+      - name: Check JavaScript syntax
+        run: node --check assets/js/portal.js
+      - name: Build Jekyll pages (smoke test)
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+      - name: Validate rendered core pages and redirects
+        run: python3 scripts/validate_build.py
