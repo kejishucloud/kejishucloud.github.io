@@ -42,3 +42,18 @@ Legacy Academic Pages content remains until migration/redirect inventory is revi
 
 ## License
 Repository license: MIT; verify individual content and third-party asset licenses separately.
+
+## Editorial publishing system (live on main)
+
+Approved long-form content lives in `_articles/<language>/<slug>.md` and is automatically included on the homepage, its topic page, four-language search, and the Atom subscription feed.
+
+- Search: `/search/`, `/en/search/`, `/es/search/`, `/ja/search/`.
+- Search index: `/search-index.json` (Jekyll-generated, client-only search, no user queries transmitted).
+- Atom feed: `/articles.xml` (approved posts only).
+- First deep dives: evidence-first research (`ai-work`) and reliable agent architecture (`agents`), with localized versions in all four languages.
+- Full article frontmatter: `layout: portal`, `view: article`, `lang`, `topic`, `translation_key`, `content_id`, `title`, `description`, `date`, `updated_at`, `review_status: approved`, `author`, `sources`, and explicit `permalink`.
+- Drafts must NOT be set to `review_status: approved` until human source and translation review is complete; use a separate non-published draft directory for work-in-progress.
+
+Validate locally with `python3 scripts/validate_portal.py`; CI runs a true Jekyll build plus the generated output checks in `scripts/validate_build.py`.
+
+Legacy Academic Pages sample posts are preserved for redirect planning; their content is not in the new search index or curated topic collections.

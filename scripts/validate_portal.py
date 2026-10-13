@@ -95,6 +95,48 @@ class PortalValidator:
                 for expected in ("layout: portal", f"lang: {lang}", f"view: {view}", f"permalink: {permalink}"):
                     self.expect(expected in source, f"{relative_path}: missing {expected!r}")
 
+    def verify_articles(self) -> None:
+        """
+        校验 8 篇四语言长文的元数据、授权状态和资料引用。
+        :return: None
+        """
+        keys = ("evidence-first-ai-research", "reliable-agent-design")
+        pillars = {"evidence-first-ai-research": "ai-work", "reliable-agent-design": "agents"}
+        root = self.root / "_articles"
+        for lang in self.LANGS:
+            search_file = ("_pages/portal-search.md" if lang == "zh"
+                           else f"{lang}/search.md")
+            self.expect((self.root / search_file).exists(), f"Missing search route: {search_file}")
+            for key in keys:
+                path = root / lang / f"{key}.md"
+                self.expect(path.exists(), f"Missing article: {path.relative_to(self.root)}")
+                if not path.exists():
+                    continue
+                content = path.read_text(encoding="utf-8")
+                expected_url = f"/{'' if lang == 'zh' else lang + '/'}{pillars[key]}/{key}/"
+                required = (
+                    "layout: portal", "view: article", f"lang: {lang}",
+                    f"topic: {pillars[key]}", f"translation_key: {key}",
+                    f"permalink: {expected_url}", "review_status: approved",
+                    "description:", "date:", "updated_at:", "sources:"
+                )
+                for field in required:
+                    self.expect(field in content, f"{lang}/{key}: missing {field}")
+                article_body = content.partition("\n---\n")[2]
+                self.expect(len(article_body) >= 500, f"{lang}/{key}: article body is too short")
+                self.expect("https://" in article_body, f"{lang}/{key}: no primary references")
+
+    def verify_discovery_assets(self) -> None:
+        """
+        保证搜索和 Feed 模板与内容集合已纳入仓库。
+        :return: None
+        """
+        for path in ("_pages/search-index.json", "_pages/articles.xml"):
+            self.expect((self.root / path).exists(), f"Missing discovery asset: {path}")
+        config = (self.root / "_config.yml").read_text(encoding="utf-8")
+        self.expect("  articles:\n    output: true" in config,
+                    "Jekyll articles collection missing or not rendered")
+
     def verify_assets(self) -> None:
         """检查渲染模板、可访问性与可选 Shader 集成。"""
         paths = (
@@ -131,13 +173,15 @@ class PortalValidator:
         self.read_data()
         self.verify_structure()
         self.verify_routes()
+        self.verify_articles()
+        self.verify_discovery_assets()
         self.verify_assets()
         if self.errors:
             for item in self.errors:
                 print(f"ERROR: {item}", file=sys.stderr)
             print(f"Failed: {len(self.errors)} issue(s).", file=sys.stderr)
             return 1
-        print("PASS: 24 localized pages, 48 source-backed guides and portal assets validated.")
+        print("PASS: 32 localized editorial/search pages, 8 articles and 48 short guides validated.")
         return 0
 
 

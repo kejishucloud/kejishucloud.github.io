@@ -8,6 +8,8 @@
 from __future__ import annotations
 
 import sys
+import json
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 
@@ -17,6 +19,7 @@ class BuiltSiteValidator:
     LANG_CODES = {"zh": "zh-CN", "en": "en", "es": "es", "ja": "ja"}
     TOPICS = ("frontier", "ai-work", "agents", "tools")
     REDIRECTS = ("news", "aigc", "algorithm", "summarize", "blog", "book")
+    ARTICLES = {"evidence-first-ai-research": "ai-work", "reliable-agent-design": "agents"}
 
     def __init__(self, site: Path) -> None:
         """
@@ -70,6 +73,51 @@ class BuiltSiteValidator:
             self.check('class="about-notes"' in html,
                        f"{route}: editorial policy content absent")
 
+    def verify_discovery(self) -> None:
+        """
+        验证搜索索引、Atom 订阅与跨语言文章内容已真实生成。
+        :return: None
+        """
+        for lang in self.LANG_CODES:
+            prefix = "/" if lang == "zh" else f"/{lang}/"
+            self.check_page(f"{prefix}search/", lang, "search")
+            for slug, topic in self.ARTICLES.items():
+                url = f"{prefix}{topic}/{slug}/"
+                self.check_page(url, lang, "article")
+                path = self.site / url.lstrip("/") / "index.html"
+                if not path.exists():
+                    continue
+                html = path.read_text(encoding="utf-8")
+                self.check('"@type":"BlogPosting"' in html,
+                           f"{url}: Article JSON-LD missing")
+                self.check('class="article-body"' in html,
+                           f"{url}: rendered article Markdown absent")
+                self.check("article:published_time" in html,
+                           f"{url}: publication metadata missing")
+        index = self.site / "search-index.json"
+        self.check(index.exists(), "Missing generated search index.")
+        if index.exists():
+            try:
+                entries = json.loads(index.read_text(encoding="utf-8"))
+                self.check(isinstance(entries, list) and len(entries) == 8,
+                           "Search index must have eight approved localized articles.")
+                for row in entries:
+                    self.check(row.get("url", "").startswith("/") and row.get("lang") in self.LANG_CODES,
+                               "Search index contains incorrect route or locale.")
+            except (ValueError, OSError) as exc:
+                self.errors.append(f"Invalid generated search JSON: {exc}")
+        atom = self.site / "articles.xml"
+        self.check(atom.exists(), "Missing Atom editorial feed.")
+        if atom.exists():
+            try:
+                feed = ET.parse(atom).getroot()
+                self.check(feed.tag == "{http://www.w3.org/2005/Atom}feed",
+                           "Invalid Atom feed root.")
+                self.check(len(feed.findall("{http://www.w3.org/2005/Atom}entry")) == 8,
+                           "Atom feed should contain eight entries.")
+            except (ET.ParseError, OSError) as exc:
+                self.errors.append(f"Invalid Atom XML: {exc}")
+
     def run(self) -> int:
         """
         验证全部页面与原栏目重定向。
@@ -81,6 +129,7 @@ class BuiltSiteValidator:
             self.check_page(f"{prefix}about/", lang, "about")
             for topic in self.TOPICS:
                 self.check_page(f"{prefix}{topic}/", lang, "topic")
+        self.verify_discovery()
         for slug in self.REDIRECTS:
             self.check((self.site / slug / "index.html").exists(),
                        f"Missing old-route redirect: /{slug}/")
@@ -89,7 +138,7 @@ class BuiltSiteValidator:
                 print(f"FAIL: {error}", file=sys.stderr)
             print(f"{len(self.errors)} build output problem(s)", file=sys.stderr)
             return 1
-        print("PASS: 24 rendered core pages, four-language metadata and six redirects.")
+        print("PASS: 36 rendered core/search pages, 8 articles, JSON index, Atom feed and redirects.")
         return 0
 
 
