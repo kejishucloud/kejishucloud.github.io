@@ -20,7 +20,8 @@ layout: null
 {% for locale in site.data.portal.locales %}{% capture translated_url %}{% unless locale[0] == 'zh' %}/{{ locale[0] }}{% endunless %}{% if page.view == 'topic' %}/{{ page.topic }}/{% elsif page.view == 'about' %}/about/{% else %}/{% endif %}{% endcapture %}
 <link rel="alternate" hreflang="{{ locale[2] }}" href="{{ translated_url | absolute_url }}">
 {% endfor %}
-<link rel="alternate" hreflang="x-default" href="{{ '/' | absolute_url }}">
+{% capture default_url %}{% if page.view == 'topic' %}/{{ page.topic }}/{% elsif page.view == 'about' %}/about/{% else %}/{% endif %}{% endcapture %}
+<link rel="alternate" hreflang="x-default" href="{{ default_url | absolute_url }}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="KeJiShuCloud">
 <meta property="og:title" content="{% if page.view == 'topic' %}{{ topic[0] | escape }}{% else %}KeJiShuCloud{% endif %}">
