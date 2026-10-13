@@ -3,6 +3,7 @@
  * No core navigation or content relies on JavaScript.
  */
 (() => {
+  document.documentElement.classList.add('js');
   const menuButton = document.querySelector('.menu-toggle');
   const navigation = document.getElementById('main-nav');
   if (menuButton && navigation) {
