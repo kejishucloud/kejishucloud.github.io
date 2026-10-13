@@ -217,7 +217,21 @@
             "https://docs.dify.ai/"
           ]
         ]
-      }
+      },
+      "search": "搜索",
+      "searchLead": "按主题检索经过整理的文章与实操指南。",
+      "searchPlaceholder": "搜索 AI 研究、智能体、工具…",
+      "latest": "最新深度内容",
+      "latestLead": "从真实问题出发，以可核验的依据解释方法。",
+      "readMore": "阅读文章",
+      "allStories": "所有文章",
+      "articleLabel": "文章",
+      "published": "发布",
+      "updated": "更新",
+      "sources": "参考资料",
+      "searchInitial": "请输入关键词，或从下面选择文章。",
+      "searchEmpty": "没有匹配结果。",
+      "searchResult": "共找到"
     },
     "en": {
       "tag": "INDEPENDENT TECH JOURNAL / GLOBAL",
@@ -334,7 +348,21 @@
             "https://docs.dify.ai/"
           ]
         ]
-      }
+      },
+      "search": "Search",
+      "searchLead": "Find reviewed articles and actionable guides by topic.",
+      "searchPlaceholder": "Search research, agents, tools…",
+      "latest": "Latest deep dives",
+      "latestLead": "Methods and decisions grounded in traceable evidence.",
+      "readMore": "Read article",
+      "allStories": "All articles",
+      "articleLabel": "Article",
+      "published": "Published",
+      "updated": "Updated",
+      "sources": "References",
+      "searchInitial": "Enter a query or browse the articles below.",
+      "searchEmpty": "No matching articles.",
+      "searchResult": "Results"
     },
     "es": {
       "tag": "TECNOLOGÍA INDEPENDIENTE / GLOBAL",
@@ -451,7 +479,21 @@
             "https://docs.dify.ai/"
           ]
         ]
-      }
+      },
+      "search": "Buscar",
+      "searchLead": "Encuentra artículos revisados y guías prácticas.",
+      "searchPlaceholder": "Buscar investigación, agentes, herramientas…",
+      "latest": "Artículos recientes",
+      "latestLead": "Métodos y decisiones basados en fuentes verificables.",
+      "readMore": "Leer artículo",
+      "allStories": "Todos los artículos",
+      "articleLabel": "Artículo",
+      "published": "Publicado",
+      "updated": "Actualizado",
+      "sources": "Referencias",
+      "searchInitial": "Introduce palabras clave o consulta los artículos.",
+      "searchEmpty": "No hay resultados.",
+      "searchResult": "Resultados"
     },
     "ja": {
       "tag": "独立系テクノロジー / グローバル",
@@ -568,7 +610,21 @@
             "https://docs.dify.ai/"
           ]
         ]
-      }
+      },
+      "search": "検索",
+      "searchLead": "確認済みの記事と実践ガイドを検索できます。",
+      "searchPlaceholder": "研究、エージェント、ツールを検索…",
+      "latest": "新着特集",
+      "latestLead": "追跡可能な根拠に基づく実践的な解説。",
+      "readMore": "記事を読む",
+      "allStories": "記事一覧",
+      "articleLabel": "記事",
+      "published": "公開",
+      "updated": "更新",
+      "sources": "参照資料",
+      "searchInitial": "キーワードを入力するか、記事一覧をご覧ください。",
+      "searchEmpty": "該当する記事はありません。",
+      "searchResult": "検索結果"
     }
   }
 }
