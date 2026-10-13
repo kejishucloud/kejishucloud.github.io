@@ -109,7 +109,7 @@
       const { createShader } = await import('https://esm.sh/shaders@4.0.3/js');
       await createShader(mount, {
         components: [
-          { type: 'LinearGradient', props: { colorA: '#143a30', colorB: '#8caa61' } }
+          { type: 'LinearGradient', props: { colorA: '#e8efff', colorB: '#708fff' } }
         ]
       });
     } catch {
