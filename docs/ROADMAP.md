@@ -102,3 +102,15 @@ Planned article route: `/{locale}/{pillar}/{article-slug}/`, except zh where loc
 5. Test on Safari, Chromium and Firefox; confirm no errors when WebGPU fails.
 6. Capture before/after screenshots and Lighthouse results.
 7. Merge only when technical and editorial criteria are satisfied.
+
+## Implementation update — 2026-10-13 (main)
+
+The live foundation now includes:
+- Multilingual long-form `articles` collection, initially 2 unique research features translated into zh/en/es/ja (8 pages).
+- Structured publication metadata: dates, authorship, approved status, translation keys and primary sources.
+- Locale-aware article discovery on home/topic pages, `/search/` and translated equivalents.
+- `/search-index.json` searchable in-browser and `/articles.xml` Atom feed.
+- CI validates published article frontmatter, translated routes, production HTML, search JSON and Atom XML.
+- Prior GitHub tutorial workflows removed to avoid redundant actions on every push.
+
+Remaining work from Phase 1: inventory legacy URLs, migrate relevant real content, retire template examples safely, add privacy/legal disclosures and comprehensive browser accessibility testing. Phase 2 flagship features and the tool atlas are not complete.

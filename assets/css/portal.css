@@ -159,3 +159,17 @@ a:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid var(
 .search-results p{color:var(--muted);margin:8px 0}
 .search-fallback h2{font:600 34px var(--display);letter-spacing:-.05em;margin-bottom:25px}
 @media(max-width:760px){.article-grid{grid-template-columns:1fr}.article-tile{min-height:215px;padding:27px}.longform{padding-bottom:90px}.article-header{padding:65px 0 50px}.article-header h1{font-size:clamp(42px,11vw,65px)}.article-layout{display:block;padding:45px 0}.article-sidebar{position:static;margin-bottom:35px}.article-body{font-size:16px}.article-body h2{font-size:27px}.article-body table{display:block;overflow-x:auto}.search-control input{font-size:15px;padding:15px}.search-control button{padding:13px 16px}.article-sources{padding-top:35px}}
+
+
+/* Globalization hardening: long Spanish/Japanese labels need a collapsible menu on tablets. */
+@media (min-width:761px) and (max-width:1050px) {
+  .header-inner{min-height:76px;gap:14px}
+  .menu-toggle{display:flex;flex-direction:column;gap:5px;padding:10px;background:transparent;border:1px solid var(--line);margin-left:auto;cursor:pointer}
+  .menu-toggle span{display:block;width:20px;height:2px;background:var(--cream)}
+  .main-nav{display:none;position:absolute;top:76px;left:0;right:0;padding:15px 30px;background:#142921;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;gap:0}
+  .main-nav.open{display:flex}
+  .main-nav a{padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+  html:not(.js) .header-inner{flex-wrap:wrap;padding-bottom:16px}
+  html:not(.js) .menu-toggle{display:none}
+  html:not(.js) .main-nav{display:flex;position:static;order:3;width:100%;padding:0;background:transparent;border:0}
+}
