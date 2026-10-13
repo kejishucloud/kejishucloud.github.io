@@ -14,8 +14,8 @@ layout: null
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0c1716">
-<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#f8f9fc">
+<meta name="color-scheme" content="light">
 <title>{% if page.view == 'home' %}KeJiShuCloud — {{ t.hero | escape }}{% elsif page.view == 'about' %}{{ t.aboutTitle | escape }} — KeJiShuCloud{% elsif page.view == 'article' %}{{ page.title | escape }} — KeJiShuCloud{% elsif page.view == 'search' %}{{ t.search | escape }} — KeJiShuCloud{% else %}{{ topic[0] | escape }} — KeJiShuCloud{% endif %}</title>
 <meta name="description" content="{% if page.view == 'home' %}{{ t.lead | escape }}{% elsif page.view == 'about' %}{{ t.aboutLead | escape }}{% elsif page.view == 'article' %}{{ page.description | escape }}{% else %}{{ topic[1] | escape }}{% endif %}">
 <link rel="canonical" href="{{ page.url | absolute_url }}">
@@ -46,7 +46,7 @@ layout: null
 <body class="portal portal--{{ page.view }}">
 <a href="#main" class="skip-link">{% if lang == 'zh' %}跳转到正文{% elsif lang == 'ja' %}本文へ{% elsif lang == 'es' %}Ir al contenido{% else %}Skip to content{% endif %}</a>
 <header class="site-header"><div class="wrap header-inner">
-<a class="brand" href="{{ prefix }}/" aria-label="KeJiShuCloud home"><b class="brand-symbol" aria-hidden="true">✳</b><span>KEJISHU<span class="brand-thin">CLOUD</span><span class="brand-dot">.</span></span></a>
+<a class="brand" href="{{ prefix }}/" aria-label="KeJiShuCloud home"><b class="brand-symbol" aria-hidden="true">K</b><span>KEJISHU<span class="brand-thin">CLOUD</span><span class="brand-dot">.</span></span></a>
 <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="{{ t.nav | escape }}"><span></span><span></span></button>
 <nav class="main-nav" id="main-nav" aria-label="{{ t.nav | escape }}">
 {% for key in site.data.portal.order %}{% assign item = topics[key][lang] %}<a href="{{ prefix }}/{{ key }}/" {% if page.topic == key %}aria-current="page"{% endif %}>{{ item[0] | escape }}</a>{% endfor %}
@@ -59,16 +59,28 @@ layout: null
 <main id="main">
 {% if page.view == 'home' %}
 <section class="hero"><div class="hero-ambient" aria-hidden="true"><div class="shader-mount" data-shader-root></div></div>
-<div class="wrap hero-body"><div class="hero-copy"><p class="eyebrow"><i class="dot"></i>{{ t.tag | escape }} <span class="eyebrow-line"></span> 2026</p><h1>{{ t.hero | escape }}<br><em>{{ t.accent | escape }}</em></h1>
+<div class="wrap hero-body"><div class="hero-copy"><p class="eyebrow"><i class="dot"></i>{{ t.tag | escape }} <span class="eyebrow-line"></span> RESEARCH / INSIGHT</p><h1>{{ t.hero | escape }}<br><em>{{ t.accent | escape }}</em></h1>
 <p class="hero-lead">{{ t.lead | escape }}</p><div class="hero-ctas"><a class="button-primary" href="#topics">{{ t.cta | escape }} <span aria-hidden="true">↗</span></a><a class="button-secondary" href="{{ prefix }}/about/">{{ t.explore | escape }} ↗</a></div></div>
-<div class="hero-insignia" aria-hidden="true"><span>KEJISHUCLOUD / SIGNAL</span><strong>✳</strong><span>TECHNOLOGY IN CONTEXT</span></div></div>
-<div class="wrap hero-bottom"><span>AI / TECH / WORKFLOWS / AGENTS</span><span>GLOBAL EDITION ↓</span></div></section>
+<div class="hero-visual" aria-hidden="true">
+  <div class="visual-stage">
+    <div class="visual-grid"></div>
+    <div class="visual-orbit visual-orbit--one"></div>
+    <div class="visual-orbit visual-orbit--two"></div>
+    <div class="visual-orbit visual-orbit--three"></div>
+    <div class="visual-core"><span class="visual-core__spark">✦</span><span class="visual-core__label">AI / IN MOTION</span></div>
+    <span class="visual-satellite visual-satellite--one"></span><span class="visual-satellite visual-satellite--two"></span>
+    <div class="visual-float visual-float--top"><span class="visual-float__dot"></span><span>RESEARCH MODE<br><strong>Always curious.</strong></span></div>
+    <div class="visual-float visual-float--bottom"><strong>04</strong><span>FOCUS<br>AREAS</span></div>
+    <div class="visual-axis">01 / SIGNAL INTELLIGENCE</div>
+  </div>
+</div></div>
+<div class="wrap hero-bottom"><span><i class="hero-bottom__line"></i> TECHNOLOGY · AI · WORKFLOWS · AGENTS</span><a href="#topics">DISCOVER THE PLATFORM <span aria-hidden="true">↘</span></a></div></section>
 <section class="content-section wrap" id="topics"><div class="section-heading"><p class="eyebrow">FIELD NOTES / 001</p><h2>{{ t.topics | escape }}</h2><p>{{ t.topicsLead | escape }}</p></div>
 <div class="topic-grid">{% for key in site.data.portal.order %}{% assign item = topics[key][lang] %}<a href="{{ prefix }}/{{ key }}/" class="topic-card topic-card--{{ key }}"><div class="card-top"><span>0{{ forloop.index }} / {{ key | upcase }}</span><span class="arrow">↗</span></div><div><h3>{{ item[0] | escape }}</h3><p>{{ item[1] | escape }}</p></div></a>{% endfor %}</div></section>
 <section class="reading-section"><div class="wrap"><div class="section-heading"><p class="eyebrow">EDITOR'S DESK / 002</p><h2>{{ t.guide | escape }}</h2><p>{{ t.guideLead | escape }}</p></div>
 <div class="reading-list">{% for key in site.data.portal.order %}{% assign item = topics[key][lang] %}{% assign first_guide = t.guides[key][0] %}<a class="reading-row" href="{{ prefix }}/{{ key }}/#guides"><span class="reading-count">0{{ forloop.index }}</span><span class="reading-name"><small>{{ item[0] | escape }}</small><strong>{{ first_guide[0] | escape }}</strong><span>{{ first_guide[1] | escape }}</span></span><b aria-hidden="true">↗</b></a>{% endfor %}</div></div></section>
 <section class="content-section wrap feature-articles" id="stories"><div class="section-heading"><p class="eyebrow">IN DEPTH / 003</p><h2>{{ t.latest | escape }}</h2><p>{{ t.latestLead | escape }}</p></div><div class="article-grid">{% for story in localized_articles limit: 4 %}<a href="{{ story.url | relative_url }}" class="article-tile"><span class="article-tile__meta">{{ t.articleLabel | escape }} · {{ story.date | date: '%Y-%m-%d' }}</span><h3>{{ story.title | escape }}</h3><p>{{ story.description | escape }}</p><span class="article-tile__action">{{ t.readMore | escape }} ↗</span></a>{% endfor %}</div><a class="inline-link" href="{{ prefix }}/search/">{{ t.allStories | escape }} ↗</a></section>
-<section class="manifesto wrap"><span class="manifesto-quote" aria-hidden="true">“</span><div><p class="eyebrow">OUR METHOD / 003</p><h2>{{ t.aboutTitle | escape }}</h2><p>{{ t.standard | escape }}</p><a class="inline-link" href="{{ prefix }}/about/">{{ t.explore | escape }} ↗</a></div></section>
+<section class="manifesto wrap"><span class="manifesto-quote" aria-hidden="true">✳</span><div><p class="eyebrow">OUR METHOD / 003</p><h2>{{ t.aboutTitle | escape }}</h2><p>{{ t.standard | escape }}</p><a class="inline-link" href="{{ prefix }}/about/">{{ t.explore | escape }} ↗</a></div></section>
 {% elsif page.view == 'topic' %}
 <section class="page-intro wrap"><a class="back-link" href="{{ prefix }}/">← {{ t.back | escape }}</a><p class="eyebrow"><i class="dot"></i>FIELD NOTES / {{ page.topic | upcase }}</p><h1>{{ topic[0] | escape }}<span class="brand-dot">.</span></h1><p class="page-deck">{{ topic[1] | escape }}</p><div class="intro-rule"><span>KEJISHUCLOUD / RESEARCH</span><span>{{ t.guideLead | escape }}</span></div></section>
 <section class="content-section wrap" id="guides"><div class="section-heading"><p class="eyebrow">PRACTICAL FRAMEWORK / 001</p><h2>{{ t.guide | escape }}</h2><p>{{ t.topicsLead | escape }}</p></div>
@@ -92,5 +104,5 @@ layout: null
 <section class="search-fallback" id="search-fallback"><h2>{{ t.allStories | escape }}</h2><div class="article-grid">{% for story in localized_articles %}<a class="article-tile" href="{{ story.url | relative_url }}"><span class="article-tile__meta">{{ story.date | date: '%Y-%m-%d' }}</span><h3>{{ story.title | escape }}</h3><p>{{ story.description | escape }}</p><span class="article-tile__action">{{ t.readMore | escape }} ↗</span></a>{% endfor %}</div></section></section>
 {% endif %}
 </main>
-<footer class="site-footer"><div class="wrap footer-main"><a class="brand" href="{{ prefix }}/"><b class="brand-symbol" aria-hidden="true">✳</b><span>KEJISHU<span class="brand-thin">CLOUD</span><span class="brand-dot">.</span></span></a><p>{{ t.footer | escape }}</p></div><div class="wrap footer-legal"><span>© {{ site.time | date: '%Y' }} KEJISHUCLOUD</span><span>INDEPENDENT · GLOBAL · PRACTICAL</span><a href="https://github.com/kejishucloud/kejishucloud.github.io" target="_blank" rel="noopener noreferrer">GITHUB ↗</a></div></footer>
+<footer class="site-footer"><div class="wrap footer-main"><a class="brand" href="{{ prefix }}/"><b class="brand-symbol" aria-hidden="true">K</b><span>KEJISHU<span class="brand-thin">CLOUD</span><span class="brand-dot">.</span></span></a><p>{{ t.footer | escape }}</p></div><div class="wrap footer-legal"><span>© {{ site.time | date: '%Y' }} KEJISHUCLOUD</span><span>INDEPENDENT · GLOBAL · PRACTICAL</span><a href="https://github.com/kejishucloud/kejishucloud.github.io" target="_blank" rel="noopener noreferrer">GITHUB ↗</a></div></footer>
 </body></html>
