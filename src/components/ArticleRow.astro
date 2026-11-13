@@ -1,0 +1,13 @@
+---
+import type { VerifiedArticle } from '../data/content';
+import { t, type Lang } from '../data/site';
+interface Props { article: VerifiedArticle; lang: Lang; index?: number; }
+const { article, lang, index = 0 } = Astro.props;
+const data = article.data;
+const minutes = Math.max(1,Math.ceil(article.body.replace(/[#*|>\[\]]/g,'').length / (lang==='zh'||lang==='ja'?340:900)));
+---
+<a href={data.permalink} class="article-row">
+  <span class="article-index">{String(index+1).padStart(2,'0')}</span>
+  <span class="article-content"><span class="article-meta">{data.topic.toUpperCase().replace('-',' / ')} · {data.date.toISOString().slice(0,10)} · {minutes} {t[lang].time}</span><strong>{data.title}</strong><span class="article-desc">{data.description}</span></span>
+  <span class="article-arrow" aria-hidden="true">↗</span>
+</a>

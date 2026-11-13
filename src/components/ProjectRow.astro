@@ -1,0 +1,10 @@
+---
+import { type Lang } from '../data/site';
+import {projects} from '../data/site';
+interface Props { project: typeof projects[number]; lang: Lang; }
+const {project,lang} = Astro.props;
+---
+<a href={project.repo} class:list={['project-row','project-'+project.visual]} target="_blank" rel="noopener noreferrer">
+  <div class="project-art" aria-hidden="true"><div class="art-grid"></div><div class="art-symbol"><span>{project.visual==='remote'?'↗':project.visual==='readify'?'A/a':'◈'}</span></div><span class="art-foot">{project.number} / {project.type}</span></div>
+  <div class="project-summary"><div class="project-topline"><span>{project.number} / SELECTED SYSTEM</span><span aria-hidden="true">↗</span></div><h3>{project.title}</h3><p>{project.detail[lang]}</p><div class="project-tags">{project.stack.map(item=><span>{item}</span>)}</div></div>
+</a>

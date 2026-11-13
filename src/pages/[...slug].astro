@@ -1,0 +1,185 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import { approvedArticles, type VerifiedArticle } from '../data/content';
+import Base from '../layouts/Base.astro';
+import ArticleRow from '../components/ArticleRow.astro';
+import ProjectRow from '../components/ProjectRow.astro';
+import HeroShader from '../components/HeroShader';
+import ToolDetail from '../components/ToolDetail.astro';
+import ToolCompare from '../components/ToolCompare.astro';
+import { directory, catalogCopy } from '../data/tools';
+import {href,langs,topicKeys,topics,t,projects,workflows,type Lang,type Topic} from '../data/site';
+
+type PageKind = 'home' | 'articles' | 'topic' | 'tools' | 'projects' | 'lab' | 'about' | 'search' | 'privacy' | 'article' | 'redirect' | 'tool-detail' | 'tool-compare';
+interface PageProps {lang: Lang; kind: PageKind; pagePath: string; topic?: Topic; article?: VerifiedArticle; redirectTo?: string; toolSlug?: string;}
+export async function getStaticPaths() {
+ const entries = await approvedArticles();
+ const paths: {params:{slug:string|undefined}; props:PageProps}[] = [];
+ for (const lang of langs) {
+   const root=lang==='zh'?'':lang+'/';
+   const add=(pagePath:string,kind:PageKind,topic?:Topic)=>{
+     paths.push({params:{slug:(root+pagePath).replace(/\/$/,'')||undefined},props:{lang,kind,pagePath,topic}});
+   };
+   add('','home');
+   add('insights','articles');
+   for(const topic of topicKeys) add(topic,topic==='tools'?'tools':'topic',topic);
+   add('projects','projects');
+   add('lab','lab');
+   add('about','about');
+   add('search','search');
+   add('privacy','privacy');
+   add('tools/compare','tool-compare');
+   for(const item of directory) {
+     paths.push({params:{slug:root+'tools/'+item.slug},props:{lang,kind:'tool-detail',pagePath:'tools/'+item.slug,toolSlug:item.slug}});
+   }
+ }
+ for(const article of entries) {
+   paths.push({params:{slug:article.data.permalink.replace(/^\/|\/$/g,'')},
+     props:{lang:article.data.lang,kind:'article',pagePath:article.data.topic,topic:article.data.topic,article}});
+ }
+ const legacy: Record<string,string> = {
+   'blog':'/insights/','news':'/frontier/','aigc':'/ai-work/',
+   'algorithm':'/frontier/','summarize':'/ai-work/','book':'/insights/'
+ };
+ for(const [pagePath,redirectTo] of Object.entries(legacy)){
+   paths.push({params:{slug:pagePath},props:{lang:'zh',kind:'redirect',pagePath,redirectTo}});
+ }
+ return paths;
+}
+const {lang,kind,pagePath,topic,article,redirectTo,toolSlug}=Astro.props as PageProps;
+const ui=t[lang];
+const currentTool=directory.find(item=>item.slug===toolSlug);
+const all=await approvedArticles();
+const localized=all.filter(a=>a.data.lang===lang).sort((a,b)=>b.data.date.valueOf()-a.data.date.valueOf());
+const visible=topic?localized.filter(a=>a.data.topic===topic):localized;
+const translationLinks=article?Object.fromEntries(all.filter(p=>p.data.translation_key===article.data.translation_key).map(p=>[p.data.lang,p.data.permalink])):undefined;
+const rendered=article?await render(article as unknown as CollectionEntry<'articles'>):null;
+const ArticleContent=rendered?.Content;
+const articleMinutes=article?Math.max(1,Math.ceil(article.body.replace(/[#*|>\[\]]/g,'').length/(lang==='zh'||lang==='ja'?340:900))):0;
+const pageTitle=article?.data.title ?? (kind==='tool-detail'?currentTool?.name??ui.tools:kind==='tool-compare'?catalogCopy[lang].compare:kind==='home'?'KeJiShuCloud':kind==='topic'||kind==='tools'?topics[topic??'frontier'][lang][0]:kind==='articles'?ui.research:kind==='projects'?ui.projects:kind==='lab'?ui.lab:kind==='about'?ui.about:kind==='search'?ui.search:ui.privacy);
+const description=article?.data.description ?? (kind==='tool-detail'?currentTool?.purpose[lang]??ui.directoryDesc:kind==='tool-compare'?catalogCopy[lang].compareIntro:kind==='home'?ui.intro:kind==='topic'||kind==='tools'?topics[topic??'frontier'][lang][1]:kind==='projects'?ui.projectDesc:kind==='lab'?ui.labDesc:kind==='about'?ui.aboutDesc:kind==='search'?ui.searchHint:ui.directoryDesc);
+const displayTitle=(pageTitle??'KeJiShuCloud');
+const introNumber=(kind==='projects'?'02':kind==='lab'?'03':kind==='about'?'04':'01');
+---
+<Base lang={lang} title={displayTitle} description={description} pagePath={pagePath} article={article} translations={translationLinks} ogType={article?'article':'website'}>
+{kind==='redirect' && redirectTo && <><meta http-equiv="refresh" content={'0;url='+redirectTo}/><section class="container generic-intro"><h1>Moved</h1><a href={redirectTo}>This page moved →</a></section><script is:inline define:vars={{redirectTo}}>window.location.replace(redirectTo);</script></>}
+{kind==='home' && <>
+  <section class="hero">
+    <div class="hero-noise" aria-hidden="true"></div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-orb"><div class="hero-orb-ring"></div><span class="orb-center">K / 03</span></div>
+      <div class="signal-track track-a"></div><div class="signal-track track-b"></div><div class="signal-track track-c"></div>
+      <HeroShader client:visible />
+      <div class="signal-label signal-label--top">INTELLIGENCE IS A PROCESS<br/>NOT A PROMISE.</div>
+      <div class="signal-label signal-label--bottom">AI / SYSTEMS / DESIGN<br/>— FIELD RECORD 003</div>
+    </div>
+    <div class="container hero-content">
+      <div class="hero-upper"><span class="eyebrow white-eyebrow"><span class="mini-diamond"></span> {ui.kicker}</span><span class="hero-edition">EDITION — 003 / 2026</span></div>
+      <div class="hero-message"><h1>{ui.lead1}<br/><em>{ui.lead2}</em></h1><div class="hero-lower"><p>{ui.intro}</p><div class="hero-cta"><a class="pill-button" href={href(lang,'insights')}>{ui.start}<span aria-hidden="true">↗</span></a><a class="text-link light-text-link" href={href(lang,'projects')}>{ui.code} <span aria-hidden="true">↗</span></a></div></div></div>
+      <div class="hero-baseline"><span>{ui.proof}</span><a href="#selected">{ui.selected} ↓</a><span class="edition-index">01 — 07</span></div>
+    </div>
+  </section>
+  <script>
+    // Decorative parallax only: do not depend on it for content or navigation.
+    const hero = document.querySelector<HTMLElement>('.hero');
+    if (hero && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && window.innerWidth > 800) {
+      let raf = 0;
+      hero.addEventListener('pointermove', event => {
+        if (event.pointerType === 'touch') return;
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          const rect = hero.getBoundingClientRect();
+          const x = (event.clientX - rect.left) / rect.width - 0.5;
+          const y = (event.clientY - rect.top) / rect.height - 0.5;
+          hero.style.setProperty('--drift-x', (x * 12).toFixed(1) + 'px');
+          hero.style.setProperty('--drift-y', (y * 10).toFixed(1) + 'px');
+        });
+      }, {passive:true});
+      hero.addEventListener('pointerleave', () => {
+        hero.style.setProperty('--drift-x','0px');
+        hero.style.setProperty('--drift-y','0px');
+      });
+    }
+  </script>
+  <section class="section selected-section container" id="selected">
+    <div class="section-top"><span class="section-index">01 / SELECTED WORK</span><span class="section-tail">ENGINEERING / OPEN SOURCE</span></div>
+    <div class="editorial-heading"><h2>{ui.selected}</h2><p>{ui.selectedDesc}</p></div>
+    <div class="project-feature">
+       {projects.map(project=><ProjectRow project={project} lang={lang}/>)}
+    </div>
+    <div class="end-link"><a class="text-link" href={href(lang,'projects')}>{ui.projects} <span aria-hidden="true">↗</span></a></div>
+  </section>
+  <section class="section topic-section" id="explore">
+    <div class="container">
+      <div class="section-top"><span class="section-index">02 / AREAS OF STUDY</span><span class="section-tail">FOUR LENSES / ONE PRACTICE</span></div>
+      <div class="editorial-heading"><h2>{ui.topics}</h2><p>{ui.topicsDesc}</p></div>
+      <div class="topic-mosaic">
+        {topicKeys.map(key=><a href={href(lang,key)} class:list={['topic-panel','panel-'+key]}>
+            <span class="topic-number">{topics[key].n} <span>{topics[key].key}</span></span>
+            <div><h3>{topics[key][lang][0]}</h3><p>{topics[key][lang][1]}</p></div><span class="topic-go" aria-hidden="true">↗</span>
+          </a>)}
+      </div>
+    </div>
+  </section>
+  <section class="section articles-section container">
+    <div class="section-top"><span class="section-index">03 / LATEST THINKING</span><span class="section-tail">{ui.journal}</span></div>
+    <div class="editorial-heading"><h2>{ui.articles}</h2><p>{ui.articlesDesc}</p></div>
+    <div class="article-list">{localized.map((a,index)=><ArticleRow article={a} lang={lang} index={index}/>)}</div>
+    <div class="end-link"><a class="text-link" href={href(lang,'insights')}>{ui.research} <span aria-hidden="true">↗</span></a></div>
+  </section>
+  <section class="section workflow-section">
+    <div class="container">
+      <div class="section-top"><span class="section-index">04 / WORKFLOWS</span><span class="section-tail">DESIGNED FOR VERIFICATION</span></div>
+      <div class="workflow-grid"><div class="workflow-statement"><span class="eyebrow">WORK / SYSTEM / REPEAT</span><h2>{ui.process}</h2><p>{ui.processDesc}</p><div class="workflow-axis" aria-hidden="true">01 <span>→</span> 02 <span>→</span> 03 <span>→</span> 04</div></div><div class="workflow-items">
+        {workflows.map((w,i)=><a class="workflow-item" href={href(lang,w.topic+'/'+w.slug)}><span>0{i+1} / PROCESS</span><strong>{w[lang][0]}</strong><p>{w[lang][1]}</p><b aria-hidden="true">↗</b></a>)}
+      </div></div>
+    </div>
+  </section>
+  <section class="section creator-section container">
+    <div class="section-top"><span class="section-index">05 / THE PRACTICE</span><span class="section-tail">AN INDEPENDENT FIELD JOURNAL</span></div>
+    <div class="creator-layout"><div class="creator-mark" aria-hidden="true"><span>K</span><small>INTELLIGENCE<br/>IN PRACTICE</small></div><div class="creator-copy"><h2>{ui.creator}</h2><p>{ui.creatorDesc}</p><a class="text-link" href={href(lang,'about')}>{ui.about} <span aria-hidden="true">↗</span></a></div></div>
+  </section>
+</>}
+{(kind==='articles'||kind==='topic'||kind==='tools'||kind==='projects'||kind==='lab'||kind==='about'||kind==='search'||kind==='privacy') && <>
+  <section class="page-heading container"><div class="section-top"><span class="section-index">{introNumber} / KEJISHUCLOUD</span><a class="small-back" href={href(lang)}>← {ui.back}</a></div><p class="eyebrow">FIELD JOURNAL / {kind.toUpperCase()}</p><h1>{pageTitle}<span class="accent">.</span></h1><p class="page-deck">{description}</p></section>
+</>}
+{kind==='articles' && <section class="section container inner-section"><div class="article-list">{localized.map((a,index)=><ArticleRow article={a} lang={lang} index={index}/>)}</div><div class="topic-index">{topicKeys.map(key=><a href={href(lang,key)}>{topics[key][lang][0]} <span>↗</span></a>)}</div></section>}
+{kind==='topic' && topic && <section class="section container inner-section"><div class="topic-banner"><span>0{topicKeys.indexOf(topic)+1} / FIELD OF STUDY</span><p>{topics[topic][lang][1]}</p><div class="technical-graphic" aria-hidden="true"><span></span><span></span><span></span></div></div><div class="mini-heading"><h2>{ui.articles}</h2><span>{ui.journal}</span></div><div class="article-list">{visible.map((a,index)=><ArticleRow article={a} lang={lang} index={index}/>)}</div>{visible.length===0&&<p class="empty-note">{ui.articlesDesc}</p>}<div class="topic-index">{topicKeys.filter(key=>key!==topic).map(key=><a href={href(lang,key)}>{topics[key][lang][0]} <span>↗</span></a>)}</div></section>}
+{kind==='tools' && <section class="section container inner-section">
+  <div class="directory-intro"><span class="eyebrow">METHOD / DOCUMENTATION / CONTEXT</span><h2>{ui.directory}</h2><p>{ui.directoryDesc}</p></div>
+  <div class="filter-bar" role="group" aria-label="Tool categories"><button type="button" class="filter-active" data-filter="All">{ui.all}</button>{['Research','Agents','Automation'].map(cat=><button type="button" data-filter={cat}>{cat}</button>)}<a class="compare-link" href={href(lang,'tools/compare')}>{catalogCopy[lang].compare} ↗</a></div>
+  <div class="tool-directory">{directory.map(tool=><article class="tool-entry" data-category={tool.category}><div class="tool-title"><span>{tool.category.toUpperCase()}</span><h3><a href={href(lang,'tools/'+tool.slug)}>{tool.name} ↗</a></h3></div><p>{tool.purpose[lang]}</p><div class="tool-source"><small>SOURCE INDEXED / {tool.checked}</small><a href={tool.url} target="_blank" rel="noopener noreferrer">{ui.sources} ↗</a></div></article>)}</div>
+  {visible.length>0 && <><div class="mini-heading"><h2>{ui.articles}</h2></div><div class="article-list">{visible.map((a,index)=><ArticleRow article={a} lang={lang} index={index}/>)}</div></>}
+  <script>
+    document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(button=>{
+      button.addEventListener('click',()=>{
+        document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(b=>b.classList.toggle('filter-active',b===button));
+        document.querySelectorAll<HTMLElement>('[data-category]').forEach(item=>{item.hidden=button.dataset.filter!=='All'&&item.dataset.category!==button.dataset.filter;});
+      });
+    });
+  </script>
+</section>}
+{kind==='tool-detail' && currentTool && <ToolDetail lang={lang} tool={currentTool} />}
+{kind==='tool-compare' && <ToolCompare lang={lang} />}
+{kind==='projects'&&<section class="section container inner-section"><div class="project-feature projects-page">{projects.map(project=><ProjectRow project={project} lang={lang}/>)}</div></section>}
+{kind==='lab'&&<section class="section container inner-section"><div class="lab-experiment">
+  <div class="lab-stage" id="lab-stage"><div class="lab-ellipse ellipse-one"></div><div class="lab-ellipse ellipse-two"></div><div class="lab-ellipse ellipse-three"></div><div class="lab-core">K / LAB</div><span class="lab-coordinate">X / 012 · Y / 043</span></div>
+  <div class="lab-controls"><p class="eyebrow">EXPERIMENT 001 / SIGNAL FIELD</p><h2>Orbital study</h2><p>CSS geometry / GPU-independent / motion-aware. A deliberately lightweight field experiment.</p><label for="lab-intensity">Intensity <output id="lab-output">45</output></label><input id="lab-intensity" type="range" min="0" max="90" value="45" /><p class="lab-disclaimer">{ui.labDesc}</p></div></div>
+<script>
+const range=document.querySelector<HTMLInputElement>('#lab-intensity');
+range?.addEventListener('input',()=>{document.querySelector<HTMLElement>('#lab-stage')?.style.setProperty('--field-rotation',range.value+'deg');const out=document.querySelector('#lab-output');if(out)out.textContent=range.value;});
+</script></section>}
+{kind==='about' && <section class="section container inner-section"><div class="about-layout"><div class="about-statement"><p class="eyebrow">INDEPENDENCE / EVIDENCE / PRACTICE</p><h2>{ui.creator}</h2><p>{ui.creatorDesc}</p><a class="text-link" href="https://github.com/kejishucloud" target="_blank" rel="noopener noreferrer">GITHUB ↗</a></div><div class="about-principles">{[['01','EVIDENCE',ui.articlesDesc],['02','ENGINEERING',ui.projectDesc],['03','TRANSPARENCY',ui.directoryDesc]].map(item=><div><span>{item[0]} / {item[1]}</span><p>{item[2]}</p></div>)}</div></div><div class="contact-banner"><span>KEJISHUCLOUD / CONTACT</span><a href="mailto:kejishucloud@gmail.com">kejishucloud@gmail.com ↗</a></div></section>}
+{kind==='privacy'&&<section class="section container inner-section prose legal-prose"><h2>Privacy / 隐私说明</h2><p>KeJiShuCloud is a static, publicly accessible site. This version does not provide accounts and does not intentionally store search terms on a server. The search index is fetched locally in your browser.</p><p>本网站为静态站点，没有用户账户功能。站内搜索在浏览器端运行，不向本站服务器提交搜索关键词。</p><p>Third-party fonts (Google Fonts), the GitHub repository links and other external sources have their own privacy policies. Embedded third-party analytics are not included in this Astro version.</p><p>外部字体与参考资料链接可能由第三方处理网络请求。联系邮件：<a href="mailto:kejishucloud@gmail.com">kejishucloud@gmail.com</a>。</p><p>Last revised: 2026-11-13.</p></section>}
+{kind==='search' && <section class="section container inner-section search-panel"><form id="site-search" role="search" data-lang={lang}><label for="search-input" class="visually-hidden">{ui.search}</label><div class="search-input-shell"><input type="search" id="search-input" placeholder={ui.searchHint} autocomplete="off" maxlength="140"/><button type="submit">{ui.search} ↗</button></div><p id="search-message" aria-live="polite">{ui.searchHint}</p><div id="search-results" class="article-list"></div></form><div class="fallback-articles"><h2>{ui.articles}</h2><div class="article-list">{localized.map((a,index)=><ArticleRow article={a} lang={lang} index={index}/>)}</div></div>
+<script src="../scripts/search.ts"></script></section>}
+{kind==='article' && article && <>
+  <article class="article-wrapper container" data-pagefind-body>
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href={href(lang)}>{ui.return}</a><span>/</span><a href={href(lang,article.data.topic)}>{topics[article.data.topic][lang][0]}</a></nav>
+    <header class="article-hero"><span class="eyebrow">{article.data.topic.toUpperCase()} / RESEARCH NOTE</span><h1>{article.data.title}</h1><p class="article-deck">{article.data.description}</p><div class="article-details"><span>KEJISHUCLOUD</span><span>{ui.date} {article.data.date.toISOString().slice(0,10)}</span><span>{ui.updated} {article.data.updated_at.toISOString().slice(0,10)}</span><span>{articleMinutes} {ui.time}</span></div></header>
+    <div class="reading-layout"><aside class="reading-aside"><span class="eyebrow">ON THIS PAGE</span>{(rendered?.headings as {depth:number;slug:string;text:string}[]|undefined)?.filter(h=>h.depth===2).map(h=><a href={'#'+h.slug}>{h.text}</a>)}<a href="#references">{ui.sources} ↗</a></aside><div class="prose">{ArticleContent && <ArticleContent />}</div></div>
+    <section class="references" id="references"><span class="eyebrow">{ui.sources}</span><ol>{article.data.sources.map(s=><li><a href={s.url} target="_blank" rel="noopener noreferrer">{s.title} <span>↗</span></a></li>)}</ol></section>
+  </article>
+  <section class="section container related-section"><div class="mini-heading"><h2>{ui.articles}</h2></div><div class="article-list">{localized.filter(x=>x.id!==article.id).map((a,index)=><ArticleRow article={a} lang={lang} index={index}/>)}</div></section>
+</>}
+</Base>

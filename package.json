@@ -1,38 +1,36 @@
 {
-  "name": "academic-pages",
-  "version": "0.8.1.1",
-  "description": "Academic Pages Mistakes Jekyll theme npm build scripts",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kejishucloud/kejishucloud.github.io"
-  },
-  "keywords": [
-    "jekyll",
-    "theme",
-    "minimal"
-  ],
-  "contributors": [
-    "Michael Rose",
-    "Robert Zupko"
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/kejishucloud/kejishucloud.github.io/issues"
-  },
-  "homepage": "https://github.com/kejishucloud/kejishucloud.github.io",
+  "name": "kejishucloud-3",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
   "engines": {
-    "node": ">= 0.10.0"
-  },
-  "dependencies": {
-    "jquery": "^3.7.1"
-  },
-  "devDependencies": {
-    "onchange": "^7.1.0",
-    "uglify-js": "^3.17.4"
+    "node": ">=22.23.4"
   },
   "scripts": {
-    "uglify": "uglifyjs node_modules/jquery/dist/jquery.min.js assets/js/plugins/jquery.fitvids.js assets/js/plugins/jquery.greedy-navigation.js assets/js/plugins/jquery.magnific-popup.js assets/js/plugins/jquery.smooth-scroll.min.js assets/js/plugins/stickyfill.min.js assets/js/_main.js -c -m -o assets/js/main.min.js",
-    "watch:js": "onchange \"assets/js/**/*.js\" -e \"assets/js/main.min.js\" -- npm run build:js",
-    "build:js": "npm run uglify"
+    "dev": "astro dev --host 127.0.0.1",
+    "check": "astro check",
+    "build": "astro build && pagefind --site dist --silent",
+    "preview": "astro preview --host 127.0.0.1",
+    "quality": "npm run check && npm run build",
+    "test:browser": "node tests/browser.mjs",
+    "test:locales": "node tests/locales.mjs"
+  },
+  "dependencies": {
+    "astro": "7.4.11",
+    "@astrojs/mdx": "8.1.5",
+    "@astrojs/react": "7.1.8",
+    "@astrojs/sitemap": "^3.7.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "shaders": "4.0.7",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.5",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "pagefind": "^1.4.0",
+    "playwright": "^1.58.0",
+    "typescript": "^5.9.0"
   }
 }

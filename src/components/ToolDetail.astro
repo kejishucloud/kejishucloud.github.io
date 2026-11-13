@@ -1,0 +1,29 @@
+---
+import { href, type Lang } from '../data/site';
+import { catalogCopy, toolDescriptions, type DirectoryItem } from '../data/tools';
+interface Props { lang:Lang; tool:DirectoryItem; }
+const {lang,tool}=Astro.props;
+const ui=catalogCopy[lang];
+const data=toolDescriptions[tool.slug]?.[lang];
+---
+<section class="page-heading container tool-detail-head">
+  <div class="section-top"><span class="section-index">KEJISHUCLOUD / SOURCE DIRECTORY</span><a class="small-back" href={href(lang,'tools')}>← {ui.back}</a></div>
+  <div class="detail-title"><span class="detail-rail">{tool.category} / {ui.details}</span><h1>{tool.name}<span class="accent">.</span></h1><p>{tool.purpose[lang]}</p></div>
+</section>
+<section class="container tool-detail-body">
+ <div class="tool-profile-grid">
+   <div class="tool-lead">
+     <div class="tool-stamp"><span>TECHNOLOGY DIRECTORY</span><strong>{tool.slug.toUpperCase()}</strong><span>REFERENCE / 2026</span></div>
+     <p>{ui.intro}</p>
+   </div>
+   <div class="tool-details">
+     <div class="tool-detail-row"><span>{ui.task}</span><p>{data?.useCase}</p></div>
+     <div class="tool-detail-row"><span>{ui.workflow}</span><p>{data?.workflow}</p></div>
+     <div class="tool-detail-row"><span>{ui.boundaries}</span><p>{data?.limits}</p></div>
+     <div class="tool-detail-row"><span>{ui.checked}</span><p><time datetime={tool.checked}>{tool.checked}</time></p></div>
+     <div class="tool-detail-row"><span>{ui.source}</span><p><a href={tool.url} target="_blank" rel="noopener noreferrer">{tool.url} ↗</a></p></div>
+   </div>
+ </div>
+ <p class="tool-disclaimer">{ui.disclaimer}</p>
+ <nav class="tool-end-nav"><a class="text-link" href={href(lang,'tools')}>← {ui.back}</a><a class="text-link" href={href(lang,'tools/compare')}>{ui.compare} ↗</a></nav>
+</section>

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kejishucloud.github.io/sitemap-index.xml

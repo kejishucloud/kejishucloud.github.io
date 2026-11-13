@@ -1,0 +1,105 @@
+---
+import '../styles/global.css';
+import { href, langs, langTags, t, type Lang } from '../data/site';
+import type { VerifiedArticle } from '../data/content';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  pagePath?: string;
+  article?: VerifiedArticle;
+  translations?: Record<string, string>;
+  ogType?: string;
+}
+const {lang, title, description, pagePath = '', article, translations, ogType = 'website'} = Astro.props;
+const ui = t[lang];
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const alternates = langs.filter(l => !article || translations?.[l]).map(l => ({
+  code: langTags[l], url: new URL(article ? (translations?.[l] ?? '/') : href(l, pagePath), Astro.site).href
+}));
+const pathName = Astro.url.pathname;
+const titleFull = title === 'KeJiShuCloud' ? title : title + ' — KeJiShuCloud';
+---
+<!doctype html>
+<html lang={langTags[lang]}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#090D18" />
+  <script is:inline>document.documentElement.classList.add('js')</script>
+  <meta name="color-scheme" content="light" />
+  <title>{titleFull}</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <link rel="canonical" href={canonical} />
+  {alternates.map(item => <link rel="alternate" hreflang={item.code} href={item.url} />)}
+  {alternates.length && <link rel="alternate" hreflang="x-default" href={new URL(article ? (translations?.zh ?? pathName) : href('zh',pagePath),Astro.site).href} />}
+  <meta property="og:type" content={ogType} />
+  <meta property="og:title" content={titleFull} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={new URL('/media/og.png',Astro.site).href} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/svg+xml" href="/media/favicon.svg" />
+  <link rel="alternate" type="application/atom+xml" title="KeJiShuCloud Research" href="/articles.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=optional" rel="stylesheet" />
+  {article && <script type="application/ld+json" set:html={JSON.stringify({
+    '@context':'https://schema.org','@type':'BlogPosting',
+    headline:article.data.title,description:article.data.description,
+    datePublished:article.data.date.toISOString(),dateModified:article.data.updated_at.toISOString(),
+    inLanguage:langTags[lang],author:{'@type':'Person',name:article.data.author},
+    publisher:{'@type':'Organization',name:'KeJiShuCloud'},mainEntityOfPage:canonical
+  })} />}
+</head>
+<body>
+  <a class="skip-link" href="#main">{ui.skip}</a>
+  <header class="site-header">
+    <div class="container nav-shell">
+      <a class="wordmark" href={href(lang)} aria-label="KeJiShuCloud — Home"><span class="wordmark-mark" aria-hidden="true">K<span>/</span></span><span>KeJiShu<span class="wordmark-light">Cloud</span></span></a>
+      <nav id="primary-nav" class="desktop-nav" aria-label={ui.nav}>
+        <a class:list={['nav-link',{active:pagePath==='insights'}]} href={href(lang,'insights')}>{ui.research}</a>
+        <a class:list={['nav-link',{active:pagePath==='ai-work'}]} href={href(lang,'ai-work')}>AI at Work</a>
+        <a class:list={['nav-link',{active:pagePath==='agents'}]} href={href(lang,'agents')}>AI Agents</a>
+        <a class:list={['nav-link',{active:pagePath==='tools'}]} href={href(lang,'tools')}>{ui.tools}</a>
+        <a class:list={['nav-link',{active:pagePath==='projects'}]} href={href(lang,'projects')}>{ui.projects}</a>
+        <a class:list={['nav-link',{active:pagePath==='lab'}]} href={href(lang,'lab')}>{ui.lab}</a>
+        <a class:list={['nav-link',{active:pagePath==='about'}]} href={href(lang,'about')}>{ui.about}</a>
+      </nav>
+      <div class="nav-actions">
+        <a href={href(lang,'search')} class="nav-search" aria-label={ui.search}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.6" cy="10.6" r="6.7"/><path d="m16 16 5 5"/></svg></a>
+        <div class="locale-control">
+          <label class="visually-hidden" for="lang-switch">{ui.nav}</label>
+          <select id="lang-switch" aria-label="Language" data-language-picker>
+            {langs.map(l => <option value={article ? (translations?.[l] ?? href(l,'insights')) : href(l,pagePath)} selected={l===lang}>{l.toUpperCase()}</option>)}
+          </select>
+        </div>
+        <button class="menu-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label={ui.nav} type="button"><span></span><span></span></button>
+      </div>
+    </div>
+    <nav id="mobile-nav" class="mobile-nav" aria-label={ui.nav}>
+      {([['insights',ui.research],['ai-work','AI at Work'],['agents','AI Agents'],['tools',ui.tools],['projects',ui.projects],['lab',ui.lab],['about',ui.about],['search',ui.search]] as const).map(([p,label]) => <a href={href(lang,p)}>{label} <span aria-hidden="true">↗</span></a>)}
+    </nav>
+  </header>
+  <main id="main"><slot /></main>
+  <footer class="site-footer">
+    <div class="container footer-heading"><p class="eyebrow">KEJISHUCLOUD / EST. IN CODE</p><h2>{ui.footer}<span class="accent">↗</span></h2><a class="footer-email" href="mailto:kejishucloud@gmail.com">{ui.contact} — kejishucloud@gmail.com</a></div>
+    <div class="container footer-bottom"><a class="wordmark footer-wordmark" href={href(lang)}>KeJiShuCloud<span class="accent">.</span></a><span>© {new Date().getFullYear()} KEJISHUCLOUD</span><a href="https://github.com/kejishucloud" rel="noopener noreferrer" target="_blank">GITHUB ↗</a><a href={href(lang,'privacy')}>{ui.privacy}</a></div>
+  </footer>
+  <script>
+    const menu = document.querySelector<HTMLButtonElement>('.menu-toggle');
+    const nav = document.querySelector('.mobile-nav');
+    menu?.addEventListener('click',()=> {
+      const open = menu.getAttribute('aria-expanded') !== 'true';
+      menu.setAttribute('aria-expanded',String(open));
+      nav?.classList.toggle('is-open',open);
+    });
+    document.querySelector<HTMLSelectElement>('[data-language-picker]')?.addEventListener('change',event => {
+      const target = (event.target as HTMLSelectElement).value;
+      if (target.startsWith('/') && !target.startsWith('//')) window.location.assign(target);
+    });
+  </script>
+</body>
+</html>

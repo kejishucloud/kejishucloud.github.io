@@ -1,0 +1,20 @@
+---
+import { href, type Lang } from '../data/site';
+import { directory,catalogCopy,toolDescriptions } from '../data/tools';
+interface Props {lang:Lang;}
+const {lang}=Astro.props;
+const ui=catalogCopy[lang];
+---
+<section class="page-heading container tool-detail-head">
+  <div class="section-top"><span class="section-index">KEJISHUCLOUD / DECISION ENGINEERING</span><a class="small-back" href={href(lang,'tools')}>← {ui.back}</a></div>
+  <div class="detail-title"><span class="detail-rail">TOOLS / REFERENCE MATRIX</span><h1>{ui.compare}<span class="accent">.</span></h1><p>{ui.compareIntro}</p></div>
+</section>
+<section class="container compare-body">
+ <div class="compare-table-scroll">
+ <table class="compare-table"><caption>{ui.compareIntro}</caption>
+ <thead><tr><th scope="col">{ui.details}</th><th scope="col">{ui.category}</th><th scope="col">{ui.task}</th><th scope="col">{ui.boundaries}</th><th scope="col">{ui.source}</th></tr></thead>
+ <tbody>{directory.map(item=><tr><th scope="row"><a href={href(lang,'tools/'+item.slug)}>{item.name} ↗</a></th><td data-label={ui.category}>{item.category}</td><td data-label={ui.task}>{toolDescriptions[item.slug]?.[lang].useCase}</td><td data-label={ui.boundaries}>{toolDescriptions[item.slug]?.[lang].limits}</td><td data-label={ui.source}><a href={item.url} target="_blank" rel="noopener noreferrer">{ui.source} ↗</a><time datetime={item.checked}>{item.checked}</time></td></tr>)}</tbody>
+ </table></div>
+ <p class="tool-disclaimer">{ui.disclaimer}</p>
+ <nav class="tool-end-nav"><a class="text-link" href={href(lang,'tools')}>← {ui.back}</a></nav>
+</section>
