@@ -1,0 +1,38 @@
+---
+import {href,t,topicKeys,topics,type Lang} from '../data/site';
+interface Props {lang:Lang;}
+const {lang}=Astro.props;
+const ui=t[lang];
+---
+<section class="study-index" id="explore">
+  <div class="container">
+    <div class="section-top"><span class="section-index">02 / RESEARCH AREAS</span><span class="section-tail">SELECT A FIELD OF STUDY</span></div>
+    <div class="study-index__layout">
+      <div class="study-index__intro">
+        <p class="eyebrow">THE RESEARCH / INDEX</p>
+        <h2>{ui.topics}</h2>
+        <p>{ui.topicsDesc}</p>
+        <div class="study-index__graphic" aria-hidden="true">
+          <svg viewBox="0 0 440 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+           <g stroke="#7D94CF" stroke-width=".8" opacity=".36">
+            <circle cx="220" cy="166" r="124"/><circle cx="220" cy="166" r="93" stroke-dasharray="2 8"/><circle cx="220" cy="166" r="60"/>
+            <path d="M0 166H440M220 0V340 M91 37L349 295 M349 37L91 295"/>
+           </g>
+           <path d="M220 42 A124 124 0 0 1 344 166" stroke="#A5B4FF" stroke-width="2"/>
+           <path d="M220 290 A124 124 0 0 1 96 166" stroke="#978DFF" stroke-width="2"/>
+           <g fill="#D4DEFF"><circle cx="220" cy="42" r="4"/><circle cx="344" cy="166" r="3"/><circle cx="220" cy="290" r="4"/><circle cx="96" cy="166" r="3"/></g>
+           <g fill="#A7B4D5" font-family="monospace" font-size="9" letter-spacing="2"><text x="235" y="33">01</text><text x="360" y="159">02</text><text x="232" y="317">03</text><text x="66" y="162">04</text><text x="220" y="170" text-anchor="middle">K / INDEX</text></g>
+          </svg>
+        </div>
+      </div>
+      <nav class="study-index__list" aria-label="Research topics">
+        {topicKeys.map((key,i)=><a class="study-index__row" href={href(lang,key)}>
+          <span class="study-index__number">{String(i+1).padStart(2,'0')} <span>/ 04</span></span>
+          <div class="study-index__text"><h3>{topics[key][lang][0]}</h3><p>{topics[key][lang][1]}</p></div>
+          <span class="study-index__go" aria-hidden="true">↗</span>
+        </a>)}
+      </nav>
+    </div>
+    <div class="study-index__closing">K / KNOWLEDGE GRAPH <span>FOUR DOMAINS — ONE ENGINEERING MINDSET</span></div>
+  </div>
+</section>

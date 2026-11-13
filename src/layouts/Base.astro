@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import '../styles/creative-studio.css';
 import { href, langs, langTags, t, type Lang } from '../data/site';
 import type { VerifiedArticle } from '../data/content';
 
@@ -54,7 +55,7 @@ const titleFull = title === 'KeJiShuCloud' ? title : title + ' — KeJiShuCloud'
     publisher:{'@type':'Organization',name:'KeJiShuCloud'},mainEntityOfPage:canonical
   })} />}
 </head>
-<body>
+<body class:list={[{'is-home':pagePath==='' && !article}] }>
   <a class="skip-link" href="#main">{ui.skip}</a>
   <header class="site-header">
     <div class="container nav-shell">
@@ -85,7 +86,7 @@ const titleFull = title === 'KeJiShuCloud' ? title : title + ' — KeJiShuCloud'
   </header>
   <main id="main"><slot /></main>
   <footer class="site-footer">
-    <div class="container footer-heading"><p class="eyebrow">KEJISHUCLOUD / EST. IN CODE</p><h2>{ui.footer}<span class="accent">↗</span></h2><a class="footer-email" href="mailto:kejishucloud@gmail.com">{ui.contact} — kejishucloud@gmail.com</a></div>
+    <div class="container footer-heading"><p class="eyebrow">KEJISHUCLOUD / EST. IN CODE</p><h2>{ui.footer}<span class="accent">↗</span></h2><a class="footer-email" href="mailto:kejishucloud@gmail.com"><span>{ui.contact}</span><span>kejishucloud@gmail.com ↗</span></a></div>
     <div class="container footer-bottom"><a class="wordmark footer-wordmark" href={href(lang)}>KeJiShuCloud<span class="accent">.</span></a><span>© {new Date().getFullYear()} KEJISHUCLOUD</span><a href="https://github.com/kejishucloud" rel="noopener noreferrer" target="_blank">GITHUB ↗</a><a href={href(lang,'privacy')}>{ui.privacy}</a></div>
   </footer>
   <script>

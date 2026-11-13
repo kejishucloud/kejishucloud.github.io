@@ -1,0 +1,44 @@
+---
+interface Props { variant: 'remote' | 'readify' | 'depth'; }
+const {variant}=Astro.props;
+const nodes = Array.from({length:11},(_,i)=>i);
+---
+<div class:list={['system-visual','system-visual--'+variant]} aria-hidden="true">
+ <div class="system-visual__grid"></div>
+ <div class="system-visual__head"><span>KEJISHU / SYSTEM DIAGRAM</span><span>{variant==='remote'?'01':variant==='readify'?'02':'03'} · SPECIMEN</span></div>
+ {variant==='remote' && <svg class="system-visual__svg" viewBox="0 0 650 440" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#91A7D1" stroke-width="1" opacity=".5"><path d="M105 222H545M325 85V355"/><circle cx="325" cy="220" r="172" stroke-dasharray="2 7" opacity=".4"/><circle cx="325" cy="220" r="120" stroke-dasharray="2 8" opacity=".25"/></g>
+    <g stroke="#8199ED" stroke-width="1.4"><path d="M180 220L325 138L470 220L325 302Z"/><path d="M325 138V302" stroke-dasharray="5 9"/></g>
+    <g><rect x="258" y="115" width="134" height="49" fill="#192A5C" stroke="#9DAFFF"/><rect x="112" y="196" width="136" height="49" fill="#0E1D42" stroke="#7D91C1"/><rect x="402" y="196" width="136" height="49" fill="#0E1D42" stroke="#7D91C1"/><rect x="258" y="278" width="134" height="49" fill="#0E1D42" stroke="#7D91C1"/></g>
+    <g fill="#EAF0FF" font-size="12" font-family="monospace" letter-spacing="1.7"><text x="325" y="144" text-anchor="middle">GATEWAY</text><text x="180" y="225" text-anchor="middle">DEVICES</text><text x="470" y="225" text-anchor="middle">TOOLS</text><text x="325" y="307" text-anchor="middle">ACCESS</text></g>
+    <g fill="#AE9DFF"><circle cx="325" cy="196" r="4"/><circle cx="325" cy="245" r="3"/><circle cx="272" cy="221" r="3"/><circle cx="378" cy="221" r="3"/></g>
+    <g fill="#8394BA" font-family="monospace" font-size="10" letter-spacing="2"><text x="76" y="389">MULTI-DEVICE</text><text x="574" y="389" text-anchor="end">MCP / ROUTING</text></g>
+ </svg>}
+ {variant==='readify' && <svg class="system-visual__svg" viewBox="0 0 650 440" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#5F7FEE" stroke-width="1.1" opacity=".5"><path d="M78 352H580M113 92V357"/><path d="M470 82H580M470 94H534" stroke-dasharray="3 5"/></g>
+    <g transform="translate(135 62) rotate(-13 182 158)">
+      <rect x="42" y="40" width="310" height="298" fill="#28396C" stroke="#788BEA"/>
+      <rect x="24" y="25" width="310" height="298" fill="#D9E0FF" stroke="#A3AFF0"/>
+      <rect x="0" y="0" width="310" height="298" fill="#F2F3FF" stroke="#A3AFF0"/>
+      <path d="M35 57H120 M35 87H271 M35 103H245 M35 119H270 M35 135H226" stroke="#8996BE" stroke-width="3"/>
+      <path d="M35 190H269 M35 205H250 M35 220H270 M35 235H216" stroke="#A2B1E1" stroke-width="2"/>
+      <rect x="34" y="158" width="215" height="11" fill="#C9D2FC"/>
+      <text x="35" y="281" fill="#334AD0" font-family="sans-serif" font-size="18" font-weight="700">AI / READING</text>
+      <circle cx="267" cy="264" r="19" fill="#3659F5"/><path d="M259 264h16m-6 -6 6 6-6 6" stroke="white" stroke-width="2"/>
+    </g>
+    <g fill="#6476A7" font-family="monospace" font-size="10" letter-spacing="2"><text x="82" y="395">DOCUMENT / KNOWLEDGE</text><text x="567" y="395" text-anchor="end">NLP / TTS</text></g>
+ </svg>}
+ {variant==='depth' && <svg class="system-visual__svg" viewBox="0 0 650 440" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#9FB3FF" stroke-width=".7" opacity=".31"><path d="M72 372L324 72L585 372"/><path d="M72 372L325 240L585 372M72 372H585"/><path d="M145 370L324 98L507 370M210 370L324 127L445 370"/></g>
+    <g stroke="#819EEC" stroke-width="1" opacity=".68">{nodes.map(i=><path d={'M'+(110+i*40)+' 319 Q310 '+(72+i*6)+' '+(548-i*37)+' 319'}/>)}</g>
+    <g fill="#B9C9FF">{Array.from({length:15},(_,r)=>Array.from({length:20},(_,c)=>{
+      const x=130+c*20+Math.sin(r*.82)*14;
+      const y=141+r*14+28*Math.sin(c*.37+r*.24);
+      return <circle cx={x} cy={y} r={c%7===0?1.9:1.1} opacity={.18+.55*(1-r/16)}/>;
+    }))}</g>
+    <g stroke="#D6E2FF" stroke-width="1.3"><path d="M116 123V89H155 M495 89H533V123 M116 310V342H155 M495 342H533V310"/></g>
+    <circle cx="325" cy="220" r="6" fill="#EFEFFF"/>
+    <g fill="#A4B4D7" font-family="monospace" font-size="10" letter-spacing="2"><text x="71" y="397">RGB-D / CAPTURE</text><text x="579" y="397" text-anchor="end">RECONSTRUCTION / 3D</text></g>
+ </svg>}
+ <div class="system-visual__foot"><span>VISUAL STUDY / NOT A PRODUCT SCREENSHOT</span><span>KEJISHUCLOUD ®</span></div>
+</div>

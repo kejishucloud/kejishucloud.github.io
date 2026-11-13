@@ -18,7 +18,7 @@ export const t: Record<Lang, {
 }> = {
   zh: {
     nav:'主导航',research:'洞察',projects:'项目',lab:'实验室',about:'关于',tools:'AI 工具',search:'搜索',
-    kicker:'独立研究 / 软件工程 / AI 实践',lead1:'探索智能的边界。',lead2:'构建有用的未来。',
+    kicker:'独立研究 / 软件工程 / AI 实践',lead1:'让智能，',lead2:'成为现实。',
     intro:'不追逐每一次技术热点。拆解 AI 如何运作、在哪些情境下可靠，以及如何通过工程实践让它真正发挥作用。',
     start:'探索研究',code:'查看项目',proof:'RESEARCH / BUILD / VERIFY',
     selected:'用真实系统回答问题。', selectedDesc:'公开代码、架构选择与复现方法，远比未经验证的数字更有说服力。',
@@ -35,7 +35,7 @@ export const t: Record<Lang, {
   },
   en: {
     nav:'Primary navigation',research:'Insights',projects:'Projects',lab:'Lab',about:'About',tools:'AI Tools',search:'Search',
-    kicker:'INDEPENDENT RESEARCH / SOFTWARE ENGINEERING / PRACTICAL AI',lead1:'Explore intelligence.',lead2:'Build what matters.',
+    kicker:'INDEPENDENT RESEARCH / SOFTWARE ENGINEERING / PRACTICAL AI',lead1:'Intelligence,',lead2:'engineered.',
     intro:'Beyond the headlines. We examine how AI actually works, where its limits are, and how to turn promising ideas into systems you can test and use.',
     start:'Explore research',code:'View the work',proof:'RESEARCH / BUILD / VERIFY',
     selected:'Built to answer real questions.',selectedDesc:'Open code, architectural trade-offs and reproducible methods—not invented success metrics.',
@@ -52,7 +52,7 @@ export const t: Record<Lang, {
   },
   es: {
     nav:'Navegación principal',research:'Análisis',projects:'Proyectos',lab:'Laboratorio',about:'Acerca de',tools:'Herramientas IA',search:'Buscar',
-    kicker:'INVESTIGACIÓN INDEPENDIENTE / INGENIERÍA / IA PRÁCTICA',lead1:'Explorar la inteligencia.',lead2:'Crear lo que importa.',
+    kicker:'INVESTIGACIÓN INDEPENDIENTE / INGENIERÍA / IA PRÁCTICA',lead1:'Inteligencia,',lead2:'hecha realidad.',
     intro:'Más allá de los titulares. Examinamos cómo funciona la IA, sus límites y cómo transformar ideas en sistemas que se pueden probar.',
     start:'Leer investigaciones',code:'Ver proyectos',proof:'INVESTIGAR / CREAR / VERIFICAR',
     selected:'Resolver problemas reales.',selectedDesc:'Código abierto, decisiones de arquitectura y métodos reproducibles, sin métricas inventadas.',
@@ -69,7 +69,7 @@ export const t: Record<Lang, {
   },
   ja: {
     nav:'メインナビゲーション',research:'考察',projects:'プロジェクト',lab:'ラボ',about:'概要',tools:'AIツール',search:'検索',
-    kicker:'独立した研究 / ソフトウェア開発 / 実用的なAI',lead1:'知能の境界を探る。',lead2:'価値ある未来をつくる。',
+    kicker:'独立した研究 / ソフトウェア開発 / 実用的なAI',lead1:'知能を探究。',lead2:'技術で実装。',
     intro:'話題を追うだけでなく、AIの仕組みと限界を検証し、試せる技術とシステムにつなげます。',
     start:'研究を読む',code:'プロジェクトを見る',proof:'研究 / 構築 / 検証',
     selected:'実際の課題を解く。',selectedDesc:'架空の数値ではなく、公開コード、設計の判断、再現できる方法を示します。',

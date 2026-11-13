@@ -13,7 +13,8 @@
     "preview": "astro preview --host 127.0.0.1",
     "quality": "npm run check && npm run build",
     "test:browser": "node tests/browser.mjs",
-    "test:locales": "node tests/locales.mjs"
+    "test:locales": "node tests/locales.mjs",
+    "art:build": "python3 scripts/generate_signal_core.py && node scripts/generate_social_og.mjs"
   },
   "dependencies": {
     "astro": "7.4.11",

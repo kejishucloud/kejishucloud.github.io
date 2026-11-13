@@ -1,0 +1,62 @@
+---
+import {href,t,type Lang} from '../data/site';
+import HeroShader from './HeroShader';
+interface Props {lang:Lang;}
+const {lang}=Astro.props;
+const ui=t[lang];
+---
+<section class="hero hero-v4" aria-labelledby="hero-title">
+  <div class="hero-v4__ambient" aria-hidden="true"></div>
+  <div class="container hero-v4__shell">
+    <div class="hero-v4__overline">
+      <span><i class="hero-v4__live-dot" aria-hidden="true"></i> KEJISHUCLOUD / INDEPENDENT AI ENGINEERING</span>
+      <span class="hero-v4__overline-right">RESEARCH STUDIO <b>//</b> 003 — 2026</span>
+    </div>
+    <div class="hero-v4__columns">
+      <div class="hero-v4__copy">
+        <div class="hero-v4__issue"><span>01 / 04</span><span>INTELLIGENCE × ENGINEERING</span></div>
+        <h1 id="hero-title"><span>{ui.lead1}</span><em>{ui.lead2}</em></h1>
+        <p class="hero-v4__description">{ui.intro}</p>
+        <div class="hero-v4__actions">
+          <a class="hero-v4__primary" href={href(lang,'projects')}><span>{ui.code}</span><span aria-hidden="true">↗</span></a>
+          <a class="hero-v4__secondary" href={href(lang,'insights')}><span>{ui.start}</span><span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="hero-v4__annotation"><span class="hero-v4__square" aria-hidden="true"></span><span>INDEPENDENT · SOURCED · REPRODUCIBLE</span></div>
+      </div>
+      <div class="hero-v4__stage">
+        <div class="hero-v4__stage-cross" aria-hidden="true">+</div>
+        <div class="hero-v4__stage-top"><span>FIG 01. / SIGNAL ARCHITECTURE</span><span>VECTORIZED FIELD</span></div>
+        <div class="hero-v4__core">
+          <img src="/media/signal-core.svg" width="1100" height="980" alt="" decoding="async" fetchpriority="high" />
+          <HeroShader client:visible />
+        </div>
+        <div class="hero-v4__stage-bottom"><span>PROCEDURAL GEOMETRY</span><span>GPU / OPTIONAL</span><span>FALLBACK / STATIC</span></div>
+      </div>
+    </div>
+    <div class="hero-v4__footer">
+      <span>KEJISHUCLOUD — TECHNOLOGY IN PRACTICE</span>
+      <span>AI RESEARCH <span class="hero-v4__divider">/</span> AGENTS <span class="hero-v4__divider">/</span> FUTURE OF WORK</span>
+      <a href="#selected" aria-label="Explore selected projects">SCROLL TO EXPLORE <span aria-hidden="true">↓</span></a>
+    </div>
+  </div>
+</section>
+<script>
+  // Decorative only. Motion never controls navigation, reading, or article visibility.
+  const stage = document.querySelector<HTMLElement>('.hero-v4__stage');
+  const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if(stage && !media.matches && window.matchMedia('(pointer:fine)').matches){
+    let queued = 0;
+    stage.addEventListener('pointermove',e=>{
+      cancelAnimationFrame(queued);
+      queued=requestAnimationFrame(()=>{
+        const r=stage.getBoundingClientRect();
+        stage.style.setProperty('--look-x',((e.clientX-r.left)/r.width-.5)*13+'px');
+        stage.style.setProperty('--look-y',((e.clientY-r.top)/r.height-.5)*13+'px');
+      });
+    },{passive:true});
+    stage.addEventListener('pointerleave',()=>{
+      stage.style.setProperty('--look-x','0px');
+      stage.style.setProperty('--look-y','0px');
+    });
+  }
+</script>
