@@ -1,59 +1,61 @@
-# KeJiShuCloud — Global Technology & Practical AI
+# KeJiShuCloud 3.0
 
-Independent technology analysis and practical guides to AI at work, agent engineering, and AI tools.
+A global, independent technology research and software engineering studio.
 
-**Site:** https://kejishucloud.github.io  
-**Status:** multilingual editorial redesign under review  
-**Stack:** Jekyll, Liquid, GitHub Pages, responsive CSS, progressive JavaScript, optional WebGPU shaders.
+**Live URL:** https://kejishucloud.github.io
+**Stack:** Astro 7, strict TypeScript, React islands, MDX, Shaders/WebGPU, Pagefind, Zod, Python 3.11, GitHub Pages.
 
-## Sections
-- [Technology signals](https://kejishucloud.github.io/frontier/)
-- [AI at work](https://kejishucloud.github.io/ai-work/)
-- [AI agents](https://kejishucloud.github.io/agents/)
-- [AI tools](https://kejishucloud.github.io/tools/)
+## Local development
 
-Language homes: `/` (zh), `/en/`, `/es/`, `/ja/`. Core topic and about routes are mirrored per language.
+Requires Node 22.23.4+ or Node 24 LTS, Python 3.11+. Run:
 
-## Architecture
-- `_layouts/portal.html`: unified home/topic/about layout and SEO alternates.
-- `_data/portal.json`: translated UI copy and source-backed starting guides.
-- `_pages/portal-*.md`: Chinese topic routes.
-- `en/`, `es/`, `ja/`: alternate locales.
-- `assets/css/portal.css`: editorial responsive design system.
-- `assets/js/portal.js`: progressive navigation and optional MIT-licensed Shaders effect.
-- `scripts/validate_portal.py`: structural content validation.
+~~~bash
+npm ci
+npm run dev
+~~~
 
-## Work with the site
-1. Use a branch and create a PR; do not edit production directly.
-2. Edit `_data/portal.json` to update localizations and field guides.
-3. Run `python3 scripts/validate_portal.py`.
-4. Review the generated Jekyll pages in a browser before merging.
+## Full release audit
 
-## Planning and standards
-- [Transformation roadmap](docs/ROADMAP.md)
-- [Product brief](PRODUCT.md)
-- [Design system](DESIGN.md)
-- [Editorial and localization handbook](docs/EDITORIAL.md)
+~~~bash
+npm run check
+python3.11 -m unittest discover -s tests/keji3 -v
+python3.11 scripts/quality.py
+npm run build
+python3.11 scripts/validate_build.py
+npm run preview -- --port 4327
+npm run test:browser
+npm run test:locales
+~~~
 
-### External inspiration
-[Shaders](https://github.com/shader-effects-inc/shaders) (MIT) for the optional WebGPU engine; [Impeccable](https://github.com/pbakaus/impeccable) (Apache-2.0) for design practices. Their separate hosted platform assets and commercial presets are not copied here.
+The browser suite uses installed Chrome and captures the homepage, article, AI tools, project and about pages at 1440, 1024, 390 and 320 viewport widths. Screenshots are saved outside the repository by default.
 
-Legacy Academic Pages content remains until migration/redirect inventory is reviewed. Some demo articles still exist; this PR introduces new primary navigation rather than claiming the entire archive is production-ready.
+## Source organization
 
-## License
-Repository license: MIT; verify individual content and third-party asset licenses separately.
+- src/layouts/Base.astro — shared navigation, localization, SEO and footer
+- src/pages/[...slug].astro — localized static routes and page types
+- src/content/articles — manually approved Markdown editorial articles
+- src/data — content models, project sources and four-language copy
+- src/components — project / article reusable pieces and lazy Shader island
+- src/styles — responsive design tokens and component rules
+- src/scripts — progressive, client-only search
+- scripts/keji3 — modular, typed Python publishing safeguards
+- tests — unit tests, interactions and screenshot checks
+- .github/workflows/deploy.yml — quality-gated static deployment
 
-## Editorial publishing system (live on main)
+## Content and localization
 
-Approved long-form content lives in `_articles/<language>/<slug>.md` and is automatically included on the homepage, its topic page, four-language search, and the Atom subscription feed.
+Chinese defaults to /, English /en/, Spanish /es/, and Japanese /ja/. Published articles retain stable URLs and translation keys. Missing translations are not synthesized. The search index runs in the browser. The Atom feed and sitemap are generated automatically.
 
-- Search: `/search/`, `/en/search/`, `/es/search/`, `/ja/search/`.
-- Search index: `/search-index.json` (Jekyll-generated, client-only search, no user queries transmitted).
-- Atom feed: `/articles.xml` (approved posts only).
-- First deep dives: evidence-first research (`ai-work`) and reliable agent architecture (`agents`), with localized versions in all four languages.
-- Full article frontmatter: `layout: portal`, `view: article`, `lang`, `topic`, `translation_key`, `content_id`, `title`, `description`, `date`, `updated_at`, `review_status: approved`, `author`, `sources`, and explicit `permalink`.
-- Drafts must NOT be set to `review_status: approved` until human source and translation review is complete; use a separate non-published draft directory for work-in-progress.
+The original long-form articles contain attributed primary references. URL format checks and source link availability are not equivalent to independent factual review. Their original editorial approval state is retained; no new automated AI text is published without human review. Tool listings are documentation-grounded, without unverified prices or performance claims.
 
-Validate locally with `python3 scripts/validate_portal.py`; CI runs a true Jekyll build plus the generated output checks in `scripts/validate_build.py`.
+## Deployment
 
-Legacy Academic Pages sample posts are preserved for redirect planning; their content is not in the new search index or curated topic collections.
+A push to main runs all checks and prepares a GitHub Pages artifact. In repository Settings > Pages, change the Source to **GitHub Actions**, otherwise branch-based Jekyll deployment will prevent the Astro site from publishing. Deployment must be verified after the Action run.
+
+## Licensing
+
+The new site code is MIT licensed. Editorial content and third-party materials retain their respective rights. The Shaders npm package (MIT) provides an optional GPU enhancement with a CSS fallback. The Impeccable tool and guidance (Apache-2.0) support visual QA, not production runtime. No commercial Shaders presets are shipped.
+
+## Evidence and remaining limitations
+
+See `docs/QA.md` for actual local mobile Lighthouse measurements, 28 screenshots and 88 multilingual checks. See `docs/ROADMAP.md` for non-blocking editorial and production validation work, and `docs/MIGRATION.md` for old URL decisions. Production deployment is not considered verified until the `main` Actions workflow and live URL both pass.
