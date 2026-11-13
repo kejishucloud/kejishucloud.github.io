@@ -1,146 +1,154 @@
 #!/usr/bin/env python3
-"""
-检查 Jekyll 构建产物的真实页面和语言链接。
+"""静态生成结果检查：真实路由、文章、HTML 语言及 SEO。"""
 
-仅使用 Python 标准库；应在 actions/jekyll-build-pages 执行后调用。
-:return: 所有核心路径、内容和 SEO 语言链接正确时返回 0
-"""
 from __future__ import annotations
-
-import sys
 import json
-import xml.etree.ElementTree as ET
+import sys
+from html.parser import HTMLParser
 from pathlib import Path
+from urllib.parse import urlsplit, unquote
+
+LANGS = {"zh": "", "en": "en/", "es": "es/", "ja": "ja/"}
+PAGES = ("", "insights/", "frontier/", "ai-work/", "agents/",
+         "tools/", "projects/", "lab/", "about/", "search/", "privacy/")
 
 
-class BuiltSiteValidator:
-    """对生成的静态 HTML 执行最小但具有约束力的发布检查。"""
+class PageInspector(HTMLParser):
+    """提取构建后页面的 SEO 结构。"""
 
-    LANG_CODES = {"zh": "zh-CN", "en": "en", "es": "es", "ja": "ja"}
-    TOPICS = ("frontier", "ai-work", "agents", "tools")
-    REDIRECTS = ("news", "aigc", "algorithm", "summarize", "blog", "book")
-    ARTICLES = {"evidence-first-ai-research": "ai-work", "reliable-agent-design": "agents"}
+    def __init__(self) -> None:
+        """初始化。:return: None。"""
+        super().__init__()
+        self.canonical: list[str] = []
+        self.hreflangs: list[str] = []
+        self.headings = 0
+        self.lang = ""
 
-    def __init__(self, site: Path) -> None:
-        """
-        构造检查器。
-        :param site: Jekyll 输出根目录，通常为仓库内 _site
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        """读取结构化标记。
+
+        :param tag: HTML 标签
+        :param attrs: 标签属性
         :return: None
         """
-        self.site = site
-        self.errors: list[str] = []
+        data = dict(attrs)
+        if tag == "html":
+            self.lang = data.get("lang") or ""
+        if tag == "h1":
+            self.headings += 1
+        if tag == "link" and data.get("rel") == "canonical":
+            self.canonical.append(data.get("href") or "")
+        if tag == "link" and data.get("hreflang"):
+            self.hreflangs.append(data["hreflang"] or "")
 
-    def check(self, condition: bool, message: str) -> None:
-        """
-        保存断言失败的信息，继续验证其他页面。
-        :param condition: 是否满足预期
-        :param message: 不满足预期时的说明
-        :return: None
-        """
-        if not condition:
-            self.errors.append(message)
 
-    def check_page(self, route: str, lang: str, view: str) -> None:
-        """
-        检查指定路由渲染出的核心元素。
-        :param route: 根路径下带前后斜线的网站路由
-        :param lang: 语言标识
-        :param view: home、topic 或 about
-        :return: None
-        """
-        target = self.site / route.lstrip("/") / "index.html"
-        self.check(target.exists(), f"{route}: missing generated index.html")
-        if not target.exists():
-            return
+def validate(root: Path) -> list[str]:
+    """校验每个核心页面以及文章。
 
-        html = target.read_text(encoding="utf-8")
-        self.check(f'<html lang="{self.LANG_CODES[lang]}"' in html,
-                   f"{route}: incorrect HTML language")
-        self.check('rel="canonical"' in html, f"{route}: no canonical link")
-        self.check("{{" not in html and "{%" not in html, f"{route}: unrendered Liquid detected")
-        self.check('id="main"' in html, f"{route}: no main landmark")
-        self.check("KEJISHU" in html, f"{route}: branding missing")
-        for expected in self.LANG_CODES.values():
-            self.check(f'hreflang="{expected}"' in html,
-                       f"{route}: alternate {expected} missing")
-        if view == "home":
-            self.check(html.count('class="topic-card ') == 4,
-                       f"{route}: expected four topical entries")
-        elif view == "topic":
-            self.check(html.count('class="guide-row"') >= 3,
-                       f"{route}: expected at least three rendered guide articles")
-        elif view == "about":
-            self.check('class="about-notes"' in html,
-                       f"{route}: editorial policy content absent")
+    :param root: Astro 项目目录
+    :return: 所有阻断错误
+    """
+    dist = root / "dist"
+    errors: list[str] = []
+    for lang, prefix in LANGS.items():
+        for page in PAGES:
+            relative = prefix + page
+            path = dist / relative / "index.html"
+            url = "/" + relative
+            if not path.is_file():
+                errors.append("Missing core route " + url)
+                continue
+            inspector = PageInspector()
+            inspector.feed(path.read_text(encoding="utf-8"))
+            if inspector.lang != ("zh-CN" if lang == "zh" else lang):
+                errors.append("Wrong html lang " + url)
+            if inspector.headings != 1:
+                errors.append(f"Expected one h1 in {url}: {inspector.headings}")
+            if inspector.canonical != ["https://kejishucloud.github.io" + url]:
+                errors.append(f"Wrong canonical: {url}")
+            if len(inspector.hreflangs) != 5:
+                errors.append(f"Wrong alternates: {url}")
+    # Every source-backed tool profile and comparison route must exist in all locales.
+    tool_slugs = ("notebooklm", "langgraph", "hugging-face-evaluate", "n8n", "compare")
+    for lang, prefix in LANGS.items():
+        for slug in tool_slugs:
+            url = "/" + prefix + "tools/" + slug + "/"
+            tool_file = dist / prefix / "tools" / slug / "index.html"
+            if not tool_file.exists():
+                errors.append("Missing tool route " + url)
+                continue
+            tool_parser = PageInspector()
+            tool_parser.feed(tool_file.read_text(encoding="utf-8"))
+            if tool_parser.lang != ("zh-CN" if lang == "zh" else lang):
+                errors.append("Wrong tool locale " + url)
+            if tool_parser.headings != 1:
+                errors.append(f"Tool route requires one h1: {url}")
+            if tool_parser.canonical != ["https://kejishucloud.github.io" + url]:
+                errors.append("Wrong tool canonical " + url)
+            if len(tool_parser.hreflangs) != 5:
+                errors.append("Missing tool hreflang alternatives " + url)
+    index = dist / "search-index.json"
+    if not index.is_file():
+        errors.append("Missing search index")
+        return errors
+    articles = json.loads(index.read_text(encoding="utf-8"))
+    if len(articles) != 8:
+        errors.append(f"Expected 8 approved articles, got {len(articles)}")
+    for article in articles:
+        path = dist / article["url"].strip("/") / "index.html"
+        if not path.exists():
+            errors.append("Missing approved article " + article["url"])
+        else:
+            inspector = PageInspector()
+            inspector.feed(path.read_text(encoding="utf-8"))
+            if len(inspector.hreflangs) < 2:
+                errors.append("Missing article alternates " + article["url"])
+    # Inspect the actual generated HTML links and assets in every language.
+    class LinkInspector(HTMLParser):
+        """Collect site-local href/src destinations without following external URLs."""
 
-    def verify_discovery(self) -> None:
-        """
-        验证搜索索引、Atom 订阅与跨语言文章内容已真实生成。
-        :return: None
-        """
-        for lang in self.LANG_CODES:
-            prefix = "/" if lang == "zh" else f"/{lang}/"
-            self.check_page(f"{prefix}search/", lang, "search")
-            for slug, topic in self.ARTICLES.items():
-                url = f"{prefix}{topic}/{slug}/"
-                self.check_page(url, lang, "article")
-                path = self.site / url.lstrip("/") / "index.html"
-                if not path.exists():
-                    continue
-                html = path.read_text(encoding="utf-8")
-                self.check('"@type":"BlogPosting"' in html,
-                           f"{url}: Article JSON-LD missing")
-                self.check('class="article-body"' in html,
-                           f"{url}: rendered article Markdown absent")
-                self.check("article:published_time" in html,
-                           f"{url}: publication metadata missing")
-        index = self.site / "search-index.json"
-        self.check(index.exists(), "Missing generated search index.")
-        if index.exists():
-            try:
-                entries = json.loads(index.read_text(encoding="utf-8"))
-                self.check(isinstance(entries, list) and len(entries) == 8,
-                           "Search index must have eight approved localized articles.")
-                for row in entries:
-                    self.check(row.get("url", "").startswith("/") and row.get("lang") in self.LANG_CODES,
-                               "Search index contains incorrect route or locale.")
-            except (ValueError, OSError) as exc:
-                self.errors.append(f"Invalid generated search JSON: {exc}")
-        atom = self.site / "articles.xml"
-        self.check(atom.exists(), "Missing Atom editorial feed.")
-        if atom.exists():
-            try:
-                feed = ET.parse(atom).getroot()
-                self.check(feed.tag == "{http://www.w3.org/2005/Atom}feed",
-                           "Invalid Atom feed root.")
-                self.check(len(feed.findall("{http://www.w3.org/2005/Atom}entry")) == 8,
-                           "Atom feed should contain eight entries.")
-            except (ET.ParseError, OSError) as exc:
-                self.errors.append(f"Invalid Atom XML: {exc}")
+        def __init__(self) -> None:
+            """Initialize the per-page URL collector. :return: None."""
+            super().__init__()
+            self.links: list[str] = []
 
-    def run(self) -> int:
-        """
-        验证全部页面与原栏目重定向。
-        :return: 成功为 0，失败为 1
-        """
-        for lang in self.LANG_CODES:
-            prefix = "/" if lang == "zh" else f"/{lang}/"
-            self.check_page(prefix, lang, "home")
-            self.check_page(f"{prefix}about/", lang, "about")
-            for topic in self.TOPICS:
-                self.check_page(f"{prefix}{topic}/", lang, "topic")
-        self.verify_discovery()
-        for slug in self.REDIRECTS:
-            self.check((self.site / slug / "index.html").exists(),
-                       f"Missing old-route redirect: /{slug}/")
-        if self.errors:
-            for error in self.errors:
-                print(f"FAIL: {error}", file=sys.stderr)
-            print(f"{len(self.errors)} build output problem(s)", file=sys.stderr)
-            return 1
-        print("PASS: 36 rendered core/search pages, 8 articles, JSON index, Atom feed and redirects.")
-        return 0
+        def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+            """Record internal URLs only.
+
+            :param tag: HTML element type
+            :param attrs: Element attributes
+            :return: None
+            """
+            data = dict(attrs)
+            key = "href" if tag in {"a", "link"} else "src"
+            url = data.get(key)
+            if url and url.startswith("/") and not url.startswith("//"):
+                self.links.append(url)
+
+    checked_links: set[tuple[str, str]] = set()
+    for html in dist.rglob("*.html"):
+        inspector = LinkInspector()
+        inspector.feed(html.read_text(encoding="utf-8"))
+        for link in inspector.links:
+            route = unquote(urlsplit(link).path)
+            if not route:
+                continue
+            target = dist / route.lstrip("/")
+            if route.endswith("/") or not target.suffix:
+                target = target / "index.html"
+            marker = (html.relative_to(dist).as_posix(), route)
+            if not target.is_file() and marker not in checked_links:
+                errors.append(f"Broken local URL {marker[0]} -> {marker[1]}")
+            checked_links.add(marker)
+    for name in ("articles.xml", "sitemap-index.xml", "pagefind/pagefind.js", "404.html"):
+        if not (dist / name).is_file():
+            errors.append("Missing asset " + name)
+    return errors
 
 
 if __name__ == "__main__":
-    sys.exit(BuiltSiteValidator(Path(__file__).resolve().parents[1] / "_site").run())
+    issues = validate(Path(__file__).resolve().parents[1])
+    for issue in issues:
+        print("ERROR:", issue)
+    print(f"Build audit {'PASS' if not issues else 'FAIL'} ({len(issues)} issues)")
+    sys.exit(bool(issues))

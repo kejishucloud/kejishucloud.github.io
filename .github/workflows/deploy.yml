@@ -1,0 +1,88 @@
+name: KeJiShuCloud 3.0 Quality and GitHub Pages
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: npm ci
+      - name: Astro strict TypeScript
+        run: npm run check
+      - name: Python content unit tests
+        run: python -m unittest discover -s tests/keji3 -v
+      - name: Review approved content metadata
+        run: python scripts/quality.py
+      - name: Build all static pages
+        run: npm run build
+      - name: Check generated routes and SEO
+        run: python scripts/validate_build.py
+      - name: Install browser for visual gate
+        run: npx playwright install --with-deps chromium
+      - name: Browser interactions, accessibility smoke checks and screenshots
+        env:
+          CI: 'true'
+          QA_OUTPUT: .artifacts/browser-visuals
+          SITE_URL: http://127.0.0.1:4327
+        run: |
+          npm run preview -- --port 4327 > /tmp/keji3-preview.log 2>&1 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true' EXIT
+          ready=0
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4327/ -o /dev/null; then ready=1; break; fi
+            sleep 1
+          done
+          test "$ready" -eq 1
+          npm run test:browser
+          npm run test:locales
+      - name: Preserve browser screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: keji3-visual-review
+          path: .artifacts/browser-visuals
+          if-no-files-found: ignore
+      - name: Configure Pages
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/configure-pages@v5
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./dist
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish validated artifact
+        id: deployment
+        uses: actions/deploy-pages@v4

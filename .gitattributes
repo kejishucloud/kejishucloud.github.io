@@ -1,0 +1,2 @@
+# Preserve upstream Impeccable skill source formatting (including Windows CRLF).
+.agents/skills/impeccable/** -whitespace
