@@ -50,3 +50,16 @@ These are not published to the web or committed as site assets. In CI, screensho
 - WebGPU shader rendering is optional and follows device capability and reduced-motion requirements; an end-to-end GPU rendering benchmark was not completed.
 - Live production Lighthouse must be rerun after deployment. Real-world Core Web Vitals require field data and cannot be inferred from local Lighthouse alone.
 - GitHub Pages **Settings → Pages → Build and deployment → Source** must be set to **GitHub Actions**. A code push cannot be reported as a successful deployment until the workflow and public URL are verified.
+
+## Visual-redesign QA / Signal Atlas 3.1
+
+After the earlier version was rejected as aesthetically generic, a second design pass changed the **layout, graphics, project presentation and topic information architecture**, not just the colors. Verified locally on 2026-11-13:
+
+- 79 Astro pages built, 0 TypeScript errors/warnings, generated-route and source checks pass.
+- Screenshots taken at 1440, 1024, 390 and 320 across 7 critical pages (home, article, tool directory, tool detail, comparison, projects and About).
+- 88 multilingual viewport+canonical checks across ZH/EN/ES/JA: 0 failures.
+- Browser menu/search/translation checks and disabled-JavaScript article reading passed.
+- Locally measured redesigned mobile homepage: Lighthouse **Performance 98 / Accessibility 95 / SEO 100**, LCP 1.80s, CLS 0, Total Blocking Time 0ms. These are laboratory values, not public production scores.
+- Design review explicitly corrected the broken desktop `RemoteOps` wordmark by reducing its first-row display type; visual review also corrected long translated contact labels.
+
+Before reporting public deployment success for this design pass, recheck the GitHub Actions run and fetch the deployed SVG + site HTML. The currently live site may remain on a previous version until the new code is pushed and deployed.

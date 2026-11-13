@@ -59,3 +59,7 @@ The new site code is MIT licensed. Editorial content and third-party materials r
 ## Evidence and remaining limitations
 
 See `docs/QA.md` for actual local mobile Lighthouse measurements, 28 screenshots and 88 multilingual checks. See `docs/ROADMAP.md` for non-blocking editorial and production validation work, and `docs/MIGRATION.md` for old URL decisions. Production deployment is not considered verified until the `main` Actions workflow and live URL both pass.
+
+## Art-direction assets
+
+`npm run art:build` regenerates the original no-GPU signal core (`public/media/signal-core.svg`) and matching social preview (`public/media/og.png`). Source scripts are deterministic and remain part of the repository. The visual scenes are conceptual technical illustrations, not fabricated measurements or product screenshots. See `DESIGN.md` for Signal Atlas 3.1.

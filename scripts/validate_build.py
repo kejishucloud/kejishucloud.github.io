@@ -6,6 +6,7 @@ import json
 import sys
 from html.parser import HTMLParser
 from pathlib import Path
+from xml.etree import ElementTree
 from urllib.parse import urlsplit, unquote
 
 LANGS = {"zh": "", "en": "en/", "es": "es/", "ja": "ja/"}
@@ -140,6 +141,18 @@ def validate(root: Path) -> list[str]:
             if not target.is_file() and marker not in checked_links:
                 errors.append(f"Broken local URL {marker[0]} -> {marker[1]}")
             checked_links.add(marker)
+    # Hero must never rely on WebGPU: verify the self-contained vector fallback.
+    core = dist / "media" / "signal-core.svg"
+    if not core.exists():
+        errors.append("Missing no-GPU signal-core.svg")
+    else:
+        try:
+            ElementTree.parse(core)
+        except ElementTree.ParseError:
+            errors.append("Invalid static signal-core.svg")
+    og = dist / "media" / "og.png"
+    if not og.is_file() or og.stat().st_size < 40000:
+        errors.append("Missing or incomplete social preview")
     for name in ("articles.xml", "sitemap-index.xml", "pagefind/pagefind.js", "404.html"):
         if not (dist / name).is_file():
             errors.append("Missing asset " + name)

@@ -31,6 +31,9 @@ try{
    if(metrics.scrollWidth>size.width+1)problems.push('horizontal overflow '+metrics.scrollWidth);
    if(metrics.h1!==1)problems.push('wrong h1 count');
    if(metrics.contentLength<120)problems.push('empty content');
+   if(route==='/' && !(await page.locator('.hero-v4__core img').evaluate(img=>img instanceof HTMLImageElement && img.complete && img.naturalWidth===1100)))problems.push('original signal artwork missing');
+   if(route==='/' && (await page.locator('.system-visual__svg').count())!==3)problems.push('project diagrams missing');
+
    if(errors.length)problems.push('browser JS: '+errors.join('; ').slice(0,220));
    findings.push({route,size:size.name,...metrics,problems});
    console.log((problems.length?'FAIL':'PASS')+' '+size.name+' '+route+' (scroll '+metrics.scrollWidth+') '+problems.join(' / '));
@@ -63,6 +66,9 @@ try{
  await p.goto(url+'/en/agents/reliable-agent-design/',{waitUntil:'domcontentloaded'});
  if((await p.locator('.prose').innerText()).length<600)throw new Error('no-JS article unavailable');
  if(!(await p.locator('.mobile-nav').isVisible()))throw new Error('no-JS mobile navigation unavailable');
+ await p.goto(url+'/',{waitUntil:'load'});
+ if(!(await p.locator('.hero-v4__core img').evaluate(img=>img instanceof HTMLImageElement && img.complete && img.naturalWidth>0)))throw new Error('no-JS fallback artwork unavailable');
+ console.log('PASS no-JS static visual fallback');
  console.log('PASS no-JS article');
  await noJS.close();
 }finally{await browser.close();}

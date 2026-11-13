@@ -24,3 +24,7 @@
 - Review every new tool capability, price and privacy claim against dated primary documentation.
 - Publish genuine project screenshots only with attribution and permission.
 - Improve article richness and category depth without generating fake long-form translations.
+
+## Signal Atlas 3.1 — Design correction
+
+The first shipped Astro visual was judged insufficiently technical. The improved candidate replaces its decorative flat ball, duplicate project cards, and flat topic color blocks with a procedural precision-core figure, three distinct engineering diagrams, a research atlas and mobile-responsive visual hierarchy. Deploy only after visual and CI checks pass.
